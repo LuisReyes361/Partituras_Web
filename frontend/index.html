@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir Partituras</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <h1>Subir Partitura</h1>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+      <input type="text" id="nombre" name="nombre" placeholder="Nombre de la partitura" required>
+      <input type="file" id="archivo" name="archivo" accept=".pdf" required>
+      <button type="submit">Subir Partitura</button>
+  </form>
+  \
+
+    <h2>Buscar Partituras</h2>
+    <input type="text" id="search" placeholder="Buscar partitura...">
+    <ul id="resultados"></ul>
+
+    <script src="/frontend/script.js"></script>
+</body>
+</html>
