@@ -5,20 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subir Partituras</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
 </head>
+
+    <header class="navbar">
+        <div class="logo">ParLH</div>
+
+
+        <div class="menu-right">
+        <nav>
+            <ul class = "nav-links">
+                <li><a href="http://127.0.0.1:5500/frontend/inicio.html#">Inicio</a></li>
+                <li><a href="http://127.0.0.1:5500/frontend/buscarPartitura.html">Buscar-partitura</a></li>
+                <li><a href="#">Soporte</a></li>
+            </ul>
+        </nav>
+
+        <div class="social-icons">
+            <li class="social-icons">
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
+            </li>
+        </div>
+    </div>
+    </header>
 <body>
-    <h1>Subir Partitura</h1>
+    
+<main class="hero-section">
+    
 
     <form id="uploadForm" enctype="multipart/form-data">
       <input type="text" id="nombre" name="nombre" placeholder="Nombre de la partitura" required>
       <input type="file" id="archivo" name="archivo" accept=".pdf" required>
       <button type="submit">Subir Partitura</button>
   </form>
-  \
 
-    <h2>Buscar Partituras</h2>
-    <input type="text" id="search" placeholder="Buscar partitura...">
-    <ul id="resultados"></ul>
+  </main>
 
     <script src="/frontend/script.js"></script>
 </body>
