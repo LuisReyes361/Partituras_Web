@@ -1,7 +1,7 @@
 .fondo{
     position: relative;
     min-height: 91vh;
-    background-image: url(../imagenes/122846-OQRTVV-201.jpg);
+    background-image: url(/frontend/imagenes/122846-OQRTVV-201.jpg);
     background-size: cover;
     background-position: center ;
     background-repeat:no-repeat ;
@@ -208,14 +208,14 @@ body {
                 padding: 1rem;
             }
 
-            /* Muestra el botón de menú hamburguesa */
+            
             .menu-toggle {
                 display: block;
                 position: relative;
                 z-index: 1001;
             }
             
-            /* Oculta el menú por defecto en móviles */
+            
             .menu-right {
                 display: none;
                 flex-direction: column;
@@ -233,7 +233,7 @@ body {
                 overflow-y: auto;
             }
 
-            /* Muestra el menú cuando tiene la clase 'active' */
+            
             .menu-right.active {
                 display: flex;
             }

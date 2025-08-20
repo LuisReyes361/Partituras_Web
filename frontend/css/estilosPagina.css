@@ -3,8 +3,8 @@
             --color-secondary: #9E67A2;
             --color-text-light: #cccccc;
             --color-white: #ffffff;
-            --color-gradient-start: #ffc200; /* Amarillo */
-            --color-gradient-end: #ffa500;   /* Naranja */
+            --color-gradient-start: #ffc200; 
+            --color-gradient-end: #ffa500;  
             --color-g-end: #00000;   /* Naranja */
         }
 
@@ -12,10 +12,10 @@
             margin: 0;
             font-family: Arial, sans-serif;
             color: var(--color-white);
-            overflow-x: hidden; /* Cambiado de hidden a auto para permitir scroll */
+            overflow-x: hidden; 
         }
 
-        /* Oculta el botón del menú por defecto para pantallas grandes */
+        
         .menu-toggle {
             display: none;
             background: none;
@@ -77,7 +77,7 @@
         .hero-section {
             position: relative;
             min-height: 91vh; 
-            background-image: url(../imagenes/20759.jpg);
+            background-image: url(/frontend/imagenes/20759.jpg);
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -160,22 +160,20 @@
             margin: 0;
         }
 
-        /* ------------------------------------------- */
-        /* Media Queries para diseño responsivo */
-        /* ------------------------------------------- */
+    
         @media (max-width: 900px) {
             .navbar {
                 padding: 1rem;
             }
 
-            /* Muestra el botón de menú hamburguesa */
+            
             .menu-toggle {
                 display: block;
                 position: relative;
                 z-index: 1001;
             }
             
-            /* Oculta el menú por defecto en móviles */
+            
             .menu-right {
                 display: none;
                 flex-direction: column;
@@ -193,7 +191,7 @@
                 overflow-y: auto;
             }
 
-            /* Muestra el menú cuando tiene la clase 'active' */
+            
             .menu-right.active {
                 display: flex;
             }
@@ -222,7 +220,7 @@
                 font-size: 1.5rem;
             }
             
-            /* Ajustes para el contenido principal */
+            
             .hero-section {
                 flex-direction: column;
                 justify-content: flex-start;
