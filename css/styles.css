@@ -1,0 +1,255 @@
+.hero-section{
+    position: relative;
+    min-height: 91vh; 
+    background-image: url(../imagenes/una-vista-aerea-de-libros-de-notas-musicales-sobre-fondo-blanco-con-espacio-para-texto.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+
+}
+  h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+
+
+    
+
+    transform: translateY(-50%); 
+
+    
+    
+    background-color: rgba(255, 255, 255, 0.2); 
+    backdrop-filter: blur(5px); 
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: #000; 
+    text-align: center;
+    overflow-y: auto;
+     
+  }
+  
+  input[type="text"],
+  input[type="file"],
+  button {
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #1f89a3;
+    border-radius: 6px;
+  }
+  
+  button {
+    background-color: #ff0202;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    border-radius: 40;
+    
+  }
+  
+  button:hover {
+    background-color: #2980b9;
+  }
+  
+  #search {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+  #resultados {
+    list-style: none;
+    padding: 0;
+  }
+  
+  #resultados li {
+    background-color: #fff;
+    margin-bottom: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  }
+  
+  #resultados li a {
+    text-decoration: none;
+    color: #2c3e50;
+    font-weight: bold;
+  }
+  
+  #resultados li a:hover {
+    text-decoration: underline;
+  }
+  
+
+
+
+
+  :root {
+    --color-primary: #4B2F6D; 
+    --color-secondary: #9E67A2;
+    --color-text-light: #cccccc;
+    --color-white: #ffffff;
+    --color-gradient-start: #ffc200; /* Amarillo */
+    --color-gradient-end: #ffa500;   /* Naranja */
+    --color-g-end: #00000;   /* Naranja */
+}
+
+body {
+    margin:0;
+    font-family: Arial, sans-serif;
+    color: var(--color-white);
+     overflow: hidden;
+    
+}
+
+.menu-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem; 
+}
+
+.social-icons {
+    color: var(--color-white);
+     gap: 9rem;
+}
+
+.social-icons {
+    display: flex; 
+    gap: 1.2rem; 
+    color: var(--color-white);
+     font-size: 1.2rem;
+}
+
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(0, 0, 0);
+    padding: 1rem 3rem;
+    
+
+}
+.nav-links{
+    list-style: none;
+    display:flex;
+    gap:2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a, .redesIconos{
+    color: var(--color-white);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-links :hover {
+    background-color: var(--color-primary);
+}
+
+.logo{
+    font-size: 1.5rem;
+    font-weight: bold;
+
+}
+
+
+.menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--color-white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        
+
+ 
+
+
+
+
+
+  @media (max-width: 900px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            
+            .menu-toggle {
+                display: block;
+                position: relative;
+                z-index: 1001;
+            }
+            
+            
+            .menu-right {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                background-color: rgba(0, 0, 0, 0.95);
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                padding: 5rem 1rem 1rem;
+                z-index: 999;
+                justify-content: flex-start;
+                gap: 1rem;
+                overflow-y: auto;
+            }
+
+            
+            .menu-right.active {
+                display: flex;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+                width: 100%;
+            }
+            
+            .nav-links li {
+                width: 100%;
+            }
+            
+            .nav-links a {
+                display: block;
+                padding: 1rem;
+                border-radius: 0;
+                font-size: 1.2rem;
+            }
+
+            .social-icons {
+                justify-content: center;
+                margin-top: 2rem;
+                font-size: 1.5rem;
+            }
+          }

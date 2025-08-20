@@ -1,0 +1,296 @@
+.fondo{
+    position: relative;
+    min-height: 91vh;
+    background-image: url(../imagenes/122846-OQRTVV-201.jpg);
+    background-size: cover;
+    background-position: center ;
+    background-repeat:no-repeat ;
+
+    align-items: center;
+    text-align: center;
+
+}
+
+
+.partitura-imagen {
+    
+    width: 100%; 
+    max-height: 150px; 
+    object-fit: cover;
+    border-radius: 6px; 
+    margin-bottom: 10px; 
+}
+
+
+.buscador {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+#search {
+    width: 60%;
+    max-width: 600px;
+    padding: 12px 20px;
+    font-size: 16px;
+    color: var(--color-white);
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    text-align: s;
+}
+:root {
+    --color-primary: #4B2F6D; 
+    --color-secondary: #9E67A2;
+    --color-text-light: #cccccc;
+    --color-white: #ffffff;
+    --color-gradient-start: #ffc200; /* Amarillo */
+    --color-gradient-end: #ffa500;   /* Naranja */
+    --color-g-end: #00000;   /* Naranja */
+}
+
+
+body {
+    margin:0;
+    font-family: Arial, sans-serif;
+    color: var(--color-white);
+    
+    
+}
+
+.menu-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem; 
+}
+
+.social-icons {
+    color: var(--color-white);
+     gap: 9rem;
+}
+
+.social-icons {
+    display: flex; 
+    gap: 1.2rem; 
+    color: var(--color-white);
+     font-size: 1.2rem;
+}
+
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(0, 0, 0);
+    padding: 1rem 3rem;
+    
+
+}
+.nav-links{
+    list-style: none;
+    display:flex;
+    gap:2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a, .redesIconos{
+    color: var(--color-white);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-links :hover {
+    background-color: var(--color-primary);
+}
+
+.logo{
+    font-size: 1.5rem;
+    font-weight: bold;
+
+}
+
+
+        
+        
+.grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 0.5fr); 
+            gap: 40px; 
+             row-gap: 80px;
+            padding: 30px 50px; 
+            max-height: 1000px;
+            overflow: auto; 
+            
+            
+        }
+        
+.partitura-card {
+    border: 1px solid #201e1e;
+    background-color: #b8b3b3;
+    border-radius: 18px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1)
+        }
+        
+.partitura-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+        }
+        
+.partitura-name {
+            font-family:  'Creepster', cursive;
+            
+            margin-bottom: 5px;
+            color: #020303;
+            flex-grow: 1;
+            margin-top: 10px;
+        }
+        
+.partitura-actions {
+    display: flex;
+    justify-content: center; 
+    gap: 20px; 
+    margin-top: 10px; 
+}
+
+.action-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px; 
+    min-width: 90px; 
+    justify-content: center;
+}
+
+.view-btn {
+    background-color: #1dce0d;
+    color: white;
+}
+
+.download-btn {
+    background-color: #000000;
+    color: white;
+}
+
+.action-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+ .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--color-white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            /* Muestra el botón de menú hamburguesa */
+            .menu-toggle {
+                display: block;
+                position: relative;
+                z-index: 1001;
+            }
+            
+            /* Oculta el menú por defecto en móviles */
+            .menu-right {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                background-color: rgba(0, 0, 0, 0.95);
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                padding: 5rem 1rem 1rem;
+                z-index: 999;
+                justify-content: flex-start;
+                gap: 1rem;
+                overflow-y: auto;
+            }
+
+            /* Muestra el menú cuando tiene la clase 'active' */
+            .menu-right.active {
+                display: flex;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+                width: 100%;
+            }
+            
+            .nav-links li {
+                width: 100%;
+            }
+            
+            .nav-links a {
+                display: block;
+                padding: 1rem;
+                border-radius: 0;
+                font-size: 1.2rem;
+            }
+
+            .social-icons {
+                justify-content: center;
+                margin-top: 2rem;
+                font-size: 1.5rem;
+            }
+
+        }
+
+
+
+
+
+.no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 10px;
+            color: #ff0000;
+        }
+        
+        
+        @media (max-width: 1024px) {
+            .grid-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+

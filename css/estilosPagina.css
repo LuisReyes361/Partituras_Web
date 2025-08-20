@@ -1,0 +1,253 @@
+:root {
+            --color-primary: #4B2F6D; 
+            --color-secondary: #9E67A2;
+            --color-text-light: #cccccc;
+            --color-white: #ffffff;
+            --color-gradient-start: #ffc200; /* Amarillo */
+            --color-gradient-end: #ffa500;   /* Naranja */
+            --color-g-end: #00000;   /* Naranja */
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: var(--color-white);
+            overflow-x: hidden; /* Cambiado de hidden a auto para permitir scroll */
+        }
+
+        /* Oculta el botón del menú por defecto para pantallas grandes */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--color-white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .menu-right {
+            display: flex;
+            align-items: center;
+            gap: 2rem; 
+        }
+
+        .social-icons {
+            display: flex; 
+            gap: 1.2rem; 
+            color: var(--color-white);
+            font-size: 1.2rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgb(0, 0, 0);
+            padding: 1rem 3rem;
+            position: relative;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a, .social-icons a {
+            color: var(--color-white);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .nav-links li:hover {
+            background-color: var(--color-primary);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .hero-section {
+            position: relative;
+            min-height: 91vh; 
+            background-image: url(../imagenes/20759.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .boton {
+            padding: 1rem 2rem;
+            background-color: rgb(0, 0, 0);
+            color: var(--color-white);
+            border: 2px solid var(--color-white);
+            border-radius: 50px;
+            text-transform: uppercase;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 17.5rem;
+            transition: background-color 0.3s;
+        }
+
+        .boton:hover {
+            background-color: #474141;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-10deg);
+            width: 150%;
+            height: 150%;
+            background: linear-gradient(135deg, var(--color-gradient-start), transparent 50%, var(--color-gradient-end));
+            opacity: 0.7;
+        }
+
+        .single-card-container {
+            position: absolute;
+            top: 50%;
+            right: 5%;
+            transform: translateY(-50%);
+            width: 300px;
+            padding: 20px;
+            z-index: 3;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: #000;
+            text-align: center;
+            overflow-y: auto;
+            max-height: 450px;
+        }
+
+        .card p {
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* ------------------------------------------- */
+        /* Media Queries para diseño responsivo */
+        /* ------------------------------------------- */
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            /* Muestra el botón de menú hamburguesa */
+            .menu-toggle {
+                display: block;
+                position: relative;
+                z-index: 1001;
+            }
+            
+            /* Oculta el menú por defecto en móviles */
+            .menu-right {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                background-color: rgba(0, 0, 0, 0.95);
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                padding: 5rem 1rem 1rem;
+                z-index: 999;
+                justify-content: flex-start;
+                gap: 1rem;
+                overflow-y: auto;
+            }
+
+            /* Muestra el menú cuando tiene la clase 'active' */
+            .menu-right.active {
+                display: flex;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+                width: 100%;
+            }
+            
+            .nav-links li {
+                width: 100%;
+            }
+            
+            .nav-links a {
+                display: block;
+                padding: 1rem;
+                border-radius: 0;
+                font-size: 1.2rem;
+            }
+
+            .social-icons {
+                justify-content: center;
+                margin-top: 2rem;
+                font-size: 1.5rem;
+            }
+            
+            /* Ajustes para el contenido principal */
+            .hero-section {
+                flex-direction: column;
+                justify-content: flex-start;
+                padding-top: 2rem;
+                min-height: 100vh;
+            }
+
+            .hero-content {
+                margin-top: 0;
+            }
+
+            .boton {
+                margin-top: 2rem;
+                padding: 0.8rem 1.5rem;
+            }
+
+.single-card-container {
+        position: static;
+        transform: none;
+        width: 80%;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .single-card-container .card {
+        padding: 1rem;
+    }
+        }

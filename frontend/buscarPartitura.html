@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Partituras</title>
+    <link rel="stylesheet" href="/css/estilosBuscador.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+ 
+</head>
+    <header class="navbar">
+        <div class="logo">ParLH</div>
+
+        <button class="menu-toggle" aria-label="Abrir menu">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="menu-right">
+        <nav>
+            <ul class = "nav-links">
+                <li><a href="http://127.0.0.1:5500/frontend/inicio.html#">Inicio</a></li>
+                <li><a href="http://127.0.0.1:5500/frontend/index.html">subir Partitura</a></li>
+                <li><a href="https://wa.me/7716841976?text=Hola,%20necesito%20soporte%20técnico">Soporte</a></li>
+            </ul>
+        </nav>
+
+        <div class="social-icons">
+            <li class="social-icons">
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://wa.me/7716841976?text=Hola,%20me%20interesa%20saber%20más%20sobre%20sus%20servicios"><i class="fa-brands fa-whatsapp"></i></a>
+            </li>
+        </div>
+    </div>
+    </header>
+<body>
+
+  <main class="fondo">
+    
+    <div class="buscador">
+    <input class="buscador" type="text" id="search" placeholder="Escribe para buscar partituras (mínimo 3 caracteres)...">
+    </div>
+
+    <div class="grid-container" id="resultados"></div>
+
+    <script src="/frontend/scripbuscar.js"></script>
+    </main>
+     <script>
+        // JavaScript corregido
+        const menuToggle = document.querySelector('.menu-toggle');
+        const menuRight = document.querySelector('.menu-right');
+
+        menuToggle.addEventListener('click', () => {
+            menuRight.classList.toggle('active');
+            
+            const icon = menuToggle.querySelector('i');
+            if (menuRight.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Cerrar menú al hacer clic en un enlace (solo en móviles)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 900) {
+                    menuRight.classList.remove('active');
+                    const icon = menuToggle.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
