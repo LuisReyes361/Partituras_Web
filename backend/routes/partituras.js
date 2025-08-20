@@ -4,10 +4,9 @@ const multer = require('multer');
 const Partitura = require('../models/partituras');
 const path = require('path');
 
-// Configuración del almacenamiento de archivos
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const uploadsPath = path.join(__dirname, '..', 'uploads'); // Corrigiendo el destino de los archivos
+        const uploadsPath = path.join(__dirname, '..', 'uploads'); 
         console.log(` Subiendo archivo a: ${uploadsPath}`);
         cb(null, uploadsPath);
     },
@@ -67,6 +66,28 @@ router.get('/buscar', async (req, res) => {
     } catch (error) {
         console.error('Error al buscar partituras:', error);
         res.status(500).json({ message: 'Error al buscar partituras', error: error.message });
+    }
+});
+
+
+
+router.get('/check-name', async (req, res) => {
+    try {
+        const { nombre } = req.query;
+        
+        if (!nombre) {
+            return res.status(400).json({ error: 'Parámetro "nombre" requerido.' });
+        }
+
+        
+        const partituraExistente = await Partitura.findOne({ nombre: nombre });
+        
+        
+        res.json({ exists: !!partituraExistente });
+
+    } catch (error) {
+        console.error('Error al verificar nombre:', error);
+        res.status(500).json({ error: 'Error interno al verificar el nombre.' });
     }
 });
 
