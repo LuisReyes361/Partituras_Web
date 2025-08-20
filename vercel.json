@@ -1,0 +1,23 @@
+{
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html",
+      "methods": ["GET"]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/inicio",
+      "destination": "/inicio.html"
+    },
+    {
+      "source": "/buscar",
+      "destination": "/buscarPartitura.html"
+    },
+    {
+      "source": "/subir",
+      "destination": "/index.html"
+    }
+  ]
+}
