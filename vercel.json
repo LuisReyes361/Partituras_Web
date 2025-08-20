@@ -2,11 +2,35 @@
   "version": 2,
   "builds": [
     {
-      "src": "frontend/**/*.html",
+      "src": "frontend/**/*",
       "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "/",
+      "dest": "/frontend/index.html"
+    },
+    {
+      "src": "/buscar",
+      "dest": "/frontend/buscarPartitura.html"
+    },
+    {
+      "src": "/inicio",
+      "dest": "/frontend/inicio.html"
+    },
+    {
+      "src": "/css/(.*)",
+      "dest": "/frontend/css/$1"
+    },
+    {
+      "src": "/imagenes/(.*)",
+      "dest": "/frontend/imagenes/$1"
+    },
+    {
+      "src": "/frontend/(.*)",
+      "dest": "/frontend/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "/frontend/index.html"
