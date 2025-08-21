@@ -1,48 +1,21 @@
 {
   "version": 2,
-  "builds": [
+  "public": true,
+  "rewrites": [
     {
-      "src": "frontend/**/*",
-      "use": "@vercel/static"
+      "source": "/(css|imagenes|js|fonts|static|assets)/(.*)",
+      "destination": "/frontend/$1/$2"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/frontend/$1"
     }
   ],
-  "routes": [
+  "redirects": [
     {
-      "src": "/css/(.*)",
-      "dest": "/frontend/css/$1"
-    },
-    {
-      "src": "/imagenes/(.*)",
-      "dest": "/frontend/imagenes/$1"
-    },
-    {
-      "src": "/frontend/(.*)",
-      "dest": "/frontend/$1"
-    },
-    {
-      "src": "/buscar",
-      "dest": "/frontend/buscarPartitura.html",
-      "headers": {
-        "Cache-Control": "public, max-age=0, must-revalidate"
-      }
-    },
-    {
-      "src": "/index",
-      "dest": "/frontend/index.html"
-    },
-    {
-      "src": "/",
-      "dest": "/frontend/inicio.html"
-    },
-        {
-      "src": "/",
-      "dest": "/frontend/buscarPartitura.html.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/frontend/inicio.html"
+      "source": "/inicio",
+      "destination": "/",
+      "permanent": true
     }
-  ],
-  "cleanUrls": true,
-  "trailingSlash": false
+  ]
 }
