@@ -77,7 +77,7 @@
         .hero-section {
             position: relative;
             min-height: 91vh; 
-            background-image: url(/frontend/imagenes/20759.jpg);
+            background-image: url(../imagenes/20759.jpg);
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;

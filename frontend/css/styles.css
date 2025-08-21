@@ -1,7 +1,7 @@
 .hero-section{
     position: relative;
     min-height: 91vh; 
-    background-image: url(/frontend/imagenes/una-vista-aerea-de-libros-de-notas-musicales-sobre-fondo-blanco-con-espacio-para-texto.jpg);
+    background-image: url(../imagenes/una-vista-aerea-de-libros-de-notas-musicales-sobre-fondo-blanco-con-espacio-para-texto.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
