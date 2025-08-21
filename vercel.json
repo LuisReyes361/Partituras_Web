@@ -9,15 +9,15 @@
   "routes": [
     {
       "src": "/",
-      "dest": "/frontend/inicio.html"
+      "dest": "/frontend/inicio.html" 
     },
     {
       "src": "/buscar",
       "dest": "/frontend/buscarPartitura.html"
     },
     {
-      "src": "/inicio",
-      "dest": "/frontend/index.html"
+      "src": "/index",
+      "dest": "/frontend/index.html"  
     },
     {
       "src": "/css/(.*)",
@@ -33,7 +33,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/frontend/inicio.html"
+      "dest": "/frontend/inicio.html" 
     }
   ]
 }
