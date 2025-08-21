@@ -6,49 +6,41 @@
       "use": "@vercel/static"
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/css/(.*)",
-      "destination": "/frontend/css/$1"
+      "src": "/css/(.*)",
+      "dest": "/frontend/css/$1"
     },
     {
-      "source": "/imagenes/(.*)",
-      "destination": "/frontend/imagenes/$1"
+      "src": "/imagenes/(.*)",
+      "dest": "/frontend/imagenes/$1"
     },
     {
-      "source": "/js/(.*)",
-      "destination": "/frontend/js/$1"
+      "src": "/frontend/(.*)",
+      "dest": "/frontend/$1"
     },
     {
-      "source": "/frontend/(.*)",
-      "destination": "/frontend/$1"
+      "src": "/buscar",
+      "dest": "/frontend/buscarPartitura.html",
+      "headers": {
+        "Cache-Control": "public, max-age=0, must-revalidate"
+      }
     },
     {
-      "source": "/buscar",
-      "destination": "/frontend/buscarPartitura.html"
+      "src": "/index",
+      "dest": "/frontend/index.html"
     },
     {
-      "source": "/subir",
-      "destination": "/frontend/index.html"
+      "src": "/",
+      "dest": "/frontend/inicio.html"
     },
-    {
-      "source": "/",
-      "destination": "/frontend/inicio.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/frontend/inicio.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/buscar",
-      "headers": [
         {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        }
-      ]
+      "src": "/",
+      "dest": "/frontend/buscarPartitura.html.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/inicio.html"
     }
   ],
   "cleanUrls": true,
