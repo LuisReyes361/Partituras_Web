@@ -8,18 +8,6 @@
   ],
   "routes": [
     {
-      "src": "/",
-      "dest": "/frontend/inicio.html" 
-    },
-    {
-      "src": "/buscar",
-      "dest": "/frontend/buscarPartitura.html"
-    },
-    {
-      "src": "/index",
-      "dest": "/frontend/index.html"  
-    },
-    {
       "src": "/css/(.*)",
       "dest": "/frontend/css/$1"
     },
@@ -32,8 +20,25 @@
       "dest": "/frontend/$1"
     },
     {
+      "src": "/buscar",
+      "dest": "/frontend/buscarPartitura.html",
+      "headers": {
+        "Cache-Control": "public, max-age=0, must-revalidate"
+      }
+    },
+    {
+      "src": "/index",
+      "dest": "/frontend/index.html"
+    },
+    {
+      "src": "/",
+      "dest": "/frontend/inicio.html"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/frontend/inicio.html" 
+      "dest": "/frontend/inicio.html"
     }
-  ]
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
 }
