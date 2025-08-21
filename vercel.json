@@ -6,45 +6,43 @@
       "use": "@vercel/static"
     }
   ],
-  "rewrites": [
+  "routes": [
+    
     {
-      "source": "/css/:path*",
-      "destination": "/frontend/css/:path*"
+      "src": "/css/(.*)",
+      "dest": "/frontend/css/$1"
     },
     {
-      "source": "/imagenes/:path*",
-      "destination": "/frontend/imagenes/:path*"
+      "src": "/imagenes/(.*)",
+      "dest": "/frontend/imagenes/$1"
     },
     {
-      "source": "/frontend/:path*",
-      "destination": "/frontend/:path*"
+      "src": "/js/(.*)",
+      "dest": "/frontend/js/$1"
     },
     {
-      "source": "/buscar",
-      "destination": "/frontend/buscarPartitura.html"
+      "src": "/frontend/(.*)",
+      "dest": "/frontend/$1"
+    },
+    
+    
+    {
+      "src": "/buscar",
+      "dest": "/frontend/buscarPartitura.html"
     },
     {
-      "source": "/subir",
-      "destination": "/frontend/index.html"
+      "src": "/subir",
+      "dest": "/frontend/index.html"
     },
     {
-      "source": "/",
-      "destination": "/frontend/inicio.html"
+      "src": "/",
+      "dest": "/frontend/inicio.html"
     },
+    
+    
     {
-      "source": "/:path*",
-      "destination": "/frontend/inicio.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/buscar",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        }
-      ]
+      "src": "/(.*)",
+      "dest": "/frontend/inicio.html"
     }
   ],
   "cleanUrls": true,
