@@ -3,15 +3,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultadosContainer = document.getElementById('resultados');
     let timeoutId;
 
-    
+    // TODO: CAMBIA ESTA URL cuando despliegues tu backend en Railway
+    const BACKEND_URL = 'http://localhost:5000'; 
+
     const descargarArchivo = async (url, nombreArchivo) => {
         try {
-            
             const botonDescarga = event.target.closest('.download-btn');
             const iconoOriginal = botonDescarga.innerHTML;
             botonDescarga.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             botonDescarga.disabled = true;
-            
             
             const response = await fetch(url);
             
@@ -19,24 +19,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(`Error HTTP: ${response.status}`);
             }
             
-            
             const blob = await response.blob();
-            
             
             const link = document.createElement('a');
             const blobUrl = window.URL.createObjectURL(blob);
             
             link.href = blobUrl;
-            link.download = nombreArchivo;
+
+            const nombreConExtension = nombreArchivo.endsWith('.pdf') ? nombreArchivo : nombreArchivo + '.pdf';
+            link.download = nombreConExtension;
             document.body.appendChild(link);
-            
             
             link.click();
             document.body.removeChild(link);
             
-            
             window.URL.revokeObjectURL(blobUrl);
-            
             
             botonDescarga.innerHTML = iconoOriginal;
             botonDescarga.disabled = false;
@@ -44,9 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Error al descargar:', error);
             
-            
             window.open(url, '_blank');
-            
             
             const botonDescarga = event.target.closest('.download-btn');
             botonDescarga.innerHTML = '<i class="fas fa-download"></i>';
@@ -68,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const imagen = document.createElement('img');
             imagen.className = 'partitura-imagen'; 
-            imagen.src = `../imagenes/20759 copy.jpg`;
+            imagen.src = `../frontend/imagenes/20759 copy.jpg`;
             imagen.alt = `Vista previa de ${partitura.nombre}`;
             
             const nombre = document.createElement('div');
@@ -78,32 +73,35 @@ document.addEventListener('DOMContentLoaded', () => {
             const acciones = document.createElement('div');
             acciones.className = 'partitura-actions';
             
-            
+            // Botón "Ver" (Ver vista previa)
             const verBtn = document.createElement('button');
             verBtn.className = 'action-btn view-btn';
             verBtn.title = 'Ver partitura';
-            
             
             const verIcon = document.createElement('i');
             verIcon.className = 'fas fa-eye';
             verBtn.appendChild(verIcon);
             
-            verBtn.onclick = () => window.open(`http://localhost:5000/uploads/${encodeURIComponent(partitura.archivo)}`, '_blank');
+            // Lógica corregida: El botón "Ver" solo abre la URL en una nueva pestaña.
+            //verBtn.onclick = () => window.open(partitura.archivo, '_blank');
+            verBtn.onclick = () => {
+                const urlVisor = `https://docs.google.com/viewer?url=${encodeURIComponent(partitura.archivo)}&embedded=true`;
+                window.open(urlVisor, '_blank');
+            };
             
-            
+            // Botón "Descargar"
             const descargarBtn = document.createElement('button');
             descargarBtn.className = 'action-btn download-btn';
             descargarBtn.title = 'Descargar partitura';
-            
             
             const descargarIcon = document.createElement('i');
             descargarIcon.className = 'fas fa-download';
             descargarBtn.appendChild(descargarIcon);
             
-            
+            // Lógica corregida: El botón "Descargar" llama a la función de descarga
+            // pasando la URL de Cloudinary y el nombre de la partitura.
             descargarBtn.onclick = (event) => {
-                const url = `http://localhost:5000/uploads/${encodeURIComponent(partitura.archivo)}`;
-                descargarArchivo(url, partitura.archivo);
+                descargarArchivo(partitura.archivo, partitura.nombre);
             };
             
             acciones.appendChild(verBtn);
@@ -120,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             resultadosContainer.innerHTML = '<div class="no-results">Buscando partituras...</div>';
             
-            const response = await fetch(`http://localhost:5000/api/partituras/buscar?q=${encodeURIComponent(query)}`);
+            const response = await fetch(`${BACKEND_URL}/api/partituras/buscar?q=${encodeURIComponent(query)}`);
             
             if (!response.ok) {
                 throw new Error(`Error HTTP: ${response.status}`);

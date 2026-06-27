@@ -10,9 +10,9 @@ dotenv.config();
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
-
-
+/*
 const uploadsPath = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsPath)) {
     fs.mkdirSync(uploadsPath);
@@ -32,20 +32,14 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/previews', express.static(previewsPath));
 
-
+*/
 mongoose
-  .connect("mongodb://localhost:27017/Partituras")
-  .then(() => console.log("📦 Conectado a MongoDB"))
-  .catch((err) => console.error("❌ Error al conectar MongoDB", err));
-
+ .connect(process.env.MONGO_URI)
+ .then(() => console.log("📦 Conectado a MongoDB Atlas ☁️"))
+ .catch((err) => console.error("❌ Error al conectar MongoDB", err));
 
 const partituras = require('./routes/partituras');
 app.use('/api/partituras', partituras); 
-
-
-
-
-
 
 
 
