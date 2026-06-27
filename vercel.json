@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "public": true,
   "rewrites": [
     {
       "source": "/(css|imagenes|js|fonts|static|assets)/(.*)",
