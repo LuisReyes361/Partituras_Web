@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let timeoutId;
 
     // TODO: CAMBIA ESTA URL cuando despliegues tu backend en Railway
-    const BACKEND_URL = 'http://localhost:5000'; 
+    const BACKEND_URL = 'https://partiturasweb-production.up.railway.app'; 
 
     const descargarArchivo = async (url, nombreArchivo) => {
         try {
