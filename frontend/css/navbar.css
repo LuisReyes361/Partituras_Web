@@ -1,0 +1,143 @@
+/* ==========================================================================
+   Navbar compartida por las tres páginas.
+
+   Estas reglas estaban copiadas en styles.css, estilosBuscador.css y
+   estilosPagina.css. Las tres versiones habían divergido: unas usaban
+   `.nav-links :hover` (selecciona cualquier descendiente), otras
+   `.nav-links li:hover`; unas aplicaban `.redesIconos` (clase que no existe en
+   el HTML) y otras `.social-icons a`. El resultado era que el mismo navbar se
+   comportaba de forma distinta según la página donde se cargaba.
+
+   Esta versión es la canónica y se carga ANTES del CSS de cada página, de modo
+   que cada página pueda sobrescribir lo que necesite.
+   ========================================================================== */
+
+:root {
+    --color-primary: #4B2F6D;
+    --color-secondary: #9E67A2;
+    --color-text-light: #cccccc;
+    --color-white: #ffffff;
+    --color-gradient-start: #ffc200; /* Amarillo */
+    --color-gradient-end: #ffa500;   /* Naranja */
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(0, 0, 0);
+    padding: 1rem 3rem;
+    position: relative;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a,
+.social-icons a {
+    color: var(--color-white);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-links li:hover {
+    background-color: var(--color-primary);
+}
+
+/* list-style/margin/padding neutralizan el <li class="social-icons"> que se
+   usa en una de las páginas (el <li> no está dentro de un <ul>). */
+.social-icons {
+    display: flex;
+    gap: 1.2rem;
+    color: var(--color-white);
+    font-size: 1.2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--color-white);
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.menu-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+
+/* ---------------------------- Móvil ---------------------------- */
+
+@media (max-width: 900px) {
+    .navbar {
+        padding: 1rem;
+    }
+
+    .menu-toggle {
+        display: block;
+        position: relative;
+        z-index: 1001;
+    }
+
+    .menu-right {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.95);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        padding: 5rem 1rem 1rem;
+        z-index: 999;
+        justify-content: flex-start;
+        gap: 1rem;
+        overflow-y: auto;
+    }
+
+    .menu-right.active {
+        display: flex;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+        width: 100%;
+    }
+
+    .nav-links li {
+        width: 100%;
+    }
+
+    .nav-links a {
+        display: block;
+        padding: 1rem;
+        border-radius: 0;
+        font-size: 1.2rem;
+    }
+
+    .social-icons {
+        justify-content: center;
+        margin-top: 2rem;
+        font-size: 1.5rem;
+    }
+}

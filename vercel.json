@@ -1,15 +1,5 @@
 {
   "version": 2,
-  "rewrites": [
-    {
-      "source": "/(css|imagenes|js|fonts|static|assets)/(.*)",
-      "destination": "/frontend/$1/$2"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/frontend/$1"
-    }
-  ],
   "redirects": [
     {
       "source": "/inicio",

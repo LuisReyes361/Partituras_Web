@@ -14,6 +14,15 @@ cloudinary.config({
 });
 
 
+// Tope de tamaño por archivo. Sin este límite, un usuario podría subir un
+// archivo de varios GB y agotar la memoria del proceso.
+const MAX_FILE_SIZE_MB = 25;
+
+// Cuántos resultados devuelve como máximo la búsqueda. Evita respuestas
+// gigantes (y bloqueos de RAM) cuando la consulta coincide con casi todo.
+const MAX_RESULTADOS = 100;
+
+
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
@@ -23,18 +32,67 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: MAX_FILE_SIZE_MB * 1024 * 1024
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === 'application/pdf') {
+      cb(null, true);
+    } else {
+      cb(new Error('Solo se permiten archivos PDF'));
+    }
+  }
+});
 
 
-router.post('/uploads', upload.single('archivo'), async (req, res) => {
+// Los errores de multer (archivo muy grande, tipo no permitido) NO llegan al
+// try/catch de la ruta, sino a next(). Por eso envolvemos el middleware para
+// traducirlos a respuestas claras en lugar de un 500 genérico.
+const procesarArchivo = (req, res, next) => {
+    upload.single('archivo')(req, res, (err) => {
+        if (!err) {
+            return next();
+        }
+
+        if (err.code === 'LIMIT_FILE_SIZE') {
+            return res.status(413).json({
+                message: `El archivo supera el límite de ${MAX_FILE_SIZE_MB} MB`
+            });
+        }
+
+        if (err.message) {
+            return res.status(400).json({ message: err.message });
+        }
+
+        return res.status(400).json({ message: 'No se pudo procesar el archivo' });
+    });
+};
+
+
+// Escapa los metacaracteres de regex para que el usuario pueda buscar texto
+// literal como "(" o "+" sin que MongoDB lo interprete como sintaxis.
+// Sin esto, un busqueda con un metacarácter desbalanceado devuelve 500
+// y un patron tipo (a+)+$ puede tumbar el servicio (ReDoS).
+const escapeRegex = (texto) => texto.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+
+router.post('/uploads', procesarArchivo, async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({ message: 'No se ha enviado un archivo' });
         }
+
+        const nombre = (req.body.nombre || '').trim();
+
+        if (!nombre) {
+            return res.status(400).json({ message: 'El nombre de la partitura es obligatorio' });
+        }
         
         
         const nueva = new Partitura({
-            nombre: req.body.nombre,
+            nombre: nombre,
             archivo: req.file.path, 
         });
 
@@ -52,8 +110,16 @@ router.post('/uploads', upload.single('archivo'), async (req, res) => {
 
 router.get('/buscar', async (req, res) => {
     try {
-        const query = req.query.q || '';
-        const partituras = await Partitura.find({ nombre: { $regex: query, $options: 'i' } });
+        const query = (req.query.q || '').trim();
+
+        if (!query) {
+            return res.json([]);
+        }
+
+        const partituras = await Partitura.find({
+            nombre: { $regex: new RegExp(escapeRegex(query), 'i') }
+        }).limit(MAX_RESULTADOS);
+
         res.json(partituras);
     } catch (error) {
         console.error('Error al buscar partituras:', error);
@@ -64,11 +130,18 @@ router.get('/buscar', async (req, res) => {
 
 router.get('/check-name', async (req, res) => {
     try {
-        const { nombre } = req.query;
+        const nombre = (req.query.nombre || '').trim();
+
         if (!nombre) {
             return res.status(400).json({ error: 'Parámetro "nombre" requerido.' });
         }
-        const partituraExistente = await Partitura.findOne({ nombre: nombre });
+
+        // Búsqueda exacta pero insensible a mayúsculas/minúsculas, para que
+        // "El torO" y "el toro" se consideren la misma partitura.
+        const partituraExistente = await Partitura.findOne({
+            nombre: new RegExp(`^${escapeRegex(nombre)}$`, 'i')
+        });
+
         res.json({ exists: !!partituraExistente });
     } catch (error) {
         console.error('Error al verificar nombre:', error);
@@ -76,28 +149,14 @@ router.get('/check-name', async (req, res) => {
     }
 });
 
-router.post('/uploads-url', async (req, res) => {
-    try {
-        const { nombre, archivo } = req.body;
+/*
+  Ruta eliminada: POST /uploads-url
 
-        if (!nombre || !archivo) {
-            return res.status(400).json({ message: 'Nombre y archivo son requeridos' });
-        }
-
-        const nueva = new Partitura({
-            nombre: nombre,
-            archivo: archivo, 
-        });
-
-        await nueva.save();
-        res.json({
-            message: 'Partitura subida correctamente',
-            partitura: nueva,
-        });
-    } catch (error) {
-        console.error('Error al subir la partitura:', error);
-        res.status(500).json({ message: 'Error al subir la partitura', error: error.message });
-    }
-});
+  No la usaba ningún cliente y permitia insertar una URL arbitraria en la base
+  de datos sin autenticación. Como esa URL luego se abre en el visor de Google
+  o se descarga desde el navegador, cualquiera podía meter un enlace malicioso
+  que luego se ejecutaría en el nombre de tu sitio. El archivo real se sube
+  por POST /uploads con multer + Cloudinary, que sí valida el tipo.
+*/
 
 module.exports = router;
