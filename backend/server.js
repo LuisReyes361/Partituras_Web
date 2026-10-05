@@ -9,8 +9,7 @@ const fs = require('fs');
 dotenv.config();
 
 const app = express();
-// ❌ ANTES
-app.use(cors());
+
 
 // ✅ DESPUÉS
 app.use(cors({
