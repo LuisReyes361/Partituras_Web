@@ -9,8 +9,17 @@ const fs = require('fs');
 dotenv.config();
 
 const app = express();
+// ❌ ANTES
 app.use(cors());
+
+// ✅ DESPUÉS
+app.use(cors({
+    origin: ['https://partituras-web-mpt.vercel.app', 'http://localhost:5500', 'http://localhost:3000'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
 app.use(express.json());
+
 
 /*
 const uploadsPath = path.join(__dirname, 'uploads');
