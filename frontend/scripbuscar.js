@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const imagen = document.createElement('img');
             imagen.className = 'partitura-imagen'; 
-            imagen.src = `../frontend/imagenes/20759 copy.jpg`;
+            imagen.src = '/imagenes/20759%20copy.jpg';
             imagen.alt = `Vista previa de ${partitura.nombre}`;
             
             const nombre = document.createElement('div');
