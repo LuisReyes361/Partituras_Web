@@ -1,5 +1,6 @@
 const form = document.getElementById('uploadForm');
 const nombreInput = document.getElementById('nombre');
+const BACKEND_URL = 'https://partiturasweb-production.up.railway.app';
 
 document.getElementById('archivo').addEventListener('change', function() {
     if (this.files && this.files[0]) {
@@ -10,7 +11,7 @@ document.getElementById('archivo').addEventListener('change', function() {
 
 const verificarNombreExistente = async (nombre) => {
     try {
-        const response = await fetch(`http://localhost:5000/api/partituras/check-name?nombre=${encodeURIComponent(nombre)}`);
+        const response = await fetch(`${BACKEND_URL}/api/partituras/check-name?nombre=${encodeURIComponent(nombre)}`);
         const data = await response.json();
         return data.exists; 
     } catch (error) {
@@ -43,7 +44,7 @@ form.addEventListener('submit', async (e) => {
     submitBtn.textContent =`subiendo`
     submitBtn.disabled = true
     
-    fetch('http://localhost:5000/api/partituras/uploads', {
+    fetch(`${BACKEND_URL}/api/partituras/uploads`, {
         method: 'POST',
         body: formData
     })
