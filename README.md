@@ -1,4 +1,4 @@
-# ParLH — Biblioteca de partituras
+# arill — Biblioteca de partituras
 
 Aplicación para guardar partituras en PDF y buscarlas/descargarlas después.
 Frontend estático en **Vercel** + API Express en **Railway** + archivos en
@@ -8,23 +8,26 @@ Frontend estático en **Vercel** + API Express en **Railway** + archivos en
 
 ```
 frontend/              Sitio estático (lo sirve Vercel)
-  index.html           Subir partitura
-  buscarPartitura.html Buscador
-  inicio.html          Portada con reglas de la comunidad
+  index.html           Portada con hero oscuro y catálogo destacado
+  buscarPartitura.html Buscador ("Explorar partituras")
+  subirPartitura.html  Formulario de subida
   config.js            URL del backend y límites (fuente única)
-  menu.js              Comportamiento del menú hamburguesa
+  menu.js              Genera el encabezado y el pie (compartidos por las 3 páginas)
+  portada.js           Tarjetas destacadas de la portada
   script.js            Formulario de subida
   scripbuscar.js       Lógica del buscador
-  css/navbar.css       Navbar compartida por las 3 páginas
-  css/styles.css       Estilos de la página de subida
-  css/estilosBuscador.css
-  css/estilosPagina.css
+  css/base.css         Colores, tipografía, botones y pie (todas las páginas)
+  css/navbar.css       Encabezado
+  css/estilosPagina.css    Portada
+  css/estilosBuscador.css  Buscador
   imagenes/
 
 backend/               API Express (lo despliega Railway)
   server.js            Servidor, CORS, conexión a Mongo
   routes/partituras.js Endpoints y subida a Cloudinary
+  routes/scraping.js   Cola de búsqueda automática en fuente externa
   models/partituras.js Esquema de Mongoose
+  models/scrapeRequests.js  Solicitudes pendientes de buscar
   .env                 Variables locales (NO se sube a git)
 ```
 
@@ -35,17 +38,31 @@ backend/               API Express (lo despliega Railway)
 El proyecto es un sitio estático y **el Output Directory debe ser `frontend`**.
 
 Con esa opción, el contenido de `frontend/` se sirve en la raíz del dominio, así
-que el navbar se carga en `/config.js`, `/script.js`, `/css/navbar.css`, etc. —
+que el menú se carga en `/config.js`, `/script.js`, `/css/base.css`, etc. —
 **sin** el prefijo `/frontend/`. Por eso los `<script>` y `<link>` de las páginas
-usan rutas como `config.js` y `css/navbar.css`, no `/frontend/config.js`.
+usan rutas como `config.js` y `css/base.css`, no `/frontend/config.js`.
 
 Si alguna vez cambias el Output Directory a `.`, hay que volver a prefixar todas
 las rutas de los HTML.
 
-`vercel.json` solo mantiene la redirección `/inicio` → `/`. Ya no lleva `rewrites`
-porque con Output Directory = `frontend` nunca se aplicaban: Vercel resuelve
-primero el sistema de archivos y servía los archivos reales, dejando los rewrites
-como código muerto que solo podía convertir 404 en rutas inexistentes.
+`vercel.json` solo tiene redirecciones: `/inicio` → `/`, más alias `/buscar` y
+`/subir` para las páginas nuevas. No lleva `rewrites` porque con Output Directory
+= `frontend` nunca se aplicaban: Vercel resuelve primero el sistema de archivos
+y servía los archivos reales, dejando los rewrites como código muerto que solo
+podía convertir 404 en rutas inexistentes.
+
+### Las tres páginas
+
+| URL | Archivo | Para qué |
+|---|---|---|
+| `/` | `index.html` | Portada: hero oscuro, catálogo destacado, reglas |
+| `/buscarPartitura.html` | `buscarPartitura.html` | Buscador con todas las coincidencias |
+| `/subirPartitura.html` | `subirPartitura.html` | Subir un PDF |
+
+El encabezado y el pie los genera `menu.js` con JavaScript. Antes cada página
+tenía su propia copia y terminaban desincronizadas; ahora hay una sola fuente.
+La página se identifica con `data-pagina` en el `<body>`, que es lo que usa
+`menu.js` para marcar el enlace activo.
 
 ### Railway (variables de entorno)
 

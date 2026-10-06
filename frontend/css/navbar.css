@@ -1,143 +1,138 @@
 /* ==========================================================================
-   Navbar compartida por las tres páginas.
-
-   Estas reglas estaban copiadas en styles.css, estilosBuscador.css y
-   estilosPagina.css. Las tres versiones habían divergido: unas usaban
-   `.nav-links :hover` (selecciona cualquier descendiente), otras
-   `.nav-links li:hover`; unas aplicaban `.redesIconos` (clase que no existe en
-   el HTML) y otras `.social-icons a`. El resultado era que el mismo navbar se
-   comportaba de forma distinta según la página donde se cargaba.
-
-   Esta versión es la canónica y se carga ANTES del CSS de cada página, de modo
-   que cada página pueda sobrescribir lo que necesite.
+   navbar.css — Encabezado compartido por las 3 páginas.
+   Se carga DESPUÉS de base.css (para poder usar sus variables).
    ========================================================================== */
 
-:root {
-    --color-primary: #4B2F6D;
-    --color-secondary: #9E67A2;
-    --color-text-light: #cccccc;
-    --color-white: #ffffff;
-    --color-gradient-start: #ffc200; /* Amarillo */
-    --color-gradient-end: #ffa500;   /* Naranja */
-}
-
 .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    background-color: rgb(0, 0, 0);
-    padding: 1rem 3rem;
-    position: relative;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 18px 0;
+    background-color: var(--azul-noche);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--blanco);
+    text-decoration: none;
+    flex-shrink: 0;
 }
 
 .nav-links {
-    list-style: none;
     display: flex;
-    gap: 2rem;
+    align-items: center;
+    gap: 30px;
+    list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.nav-links a,
-.social-icons a {
-    color: var(--color-white);
+.nav-links a {
+    color: var(--gris-300);
+    font-size: 0.92rem;
+    font-weight: 500;
     text-decoration: none;
-    font-weight: bold;
+    transition: color 0.2s ease;
 }
 
-.nav-links li:hover {
-    background-color: var(--color-primary);
+.nav-links a:hover,
+.nav-links a.activo {
+    color: var(--blanco);
 }
 
-/* list-style/margin/padding neutralizan el <li class="social-icons"> que se
-   usa en una de las páginas (el <li> no está dentro de un <ul>). */
-.social-icons {
-    display: flex;
-    gap: 1.2rem;
-    color: var(--color-white);
-    font-size: 1.2rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+/* Enlace del botón "Subir partitura" del Figma, con borde */
+.nav-links .nav-destacado a {
+    padding: 9px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    color: var(--blanco);
+}
+
+.nav-links .nav-destacado a:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.5);
 }
 
 .menu-toggle {
     display: none;
     background: none;
     border: none;
-    color: var(--color-white);
+    color: var(--blanco);
     font-size: 1.5rem;
     cursor: pointer;
-    z-index: 1000;
+    padding: 4px;
+    z-index: 1001;
 }
 
 .menu-right {
     display: flex;
     align-items: center;
-    gap: 2rem;
+}
+
+.social-icons {
+    display: flex;
+    gap: 14px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.social-icons a {
+    color: var(--gris-400, #94A3B8);
+    font-size: 1.05rem;
+    transition: color 0.2s ease;
+}
+
+.social-icons a:hover {
+    color: var(--blanco);
 }
 
 
-/* ---------------------------- Móvil ---------------------------- */
+/* ------------------------------- Móvil ------------------------------- */
 
 @media (max-width: 900px) {
-    .navbar {
-        padding: 1rem;
-    }
-
     .menu-toggle {
         display: block;
-        position: relative;
-        z-index: 1001;
+        order: 2;
     }
 
     .menu-right {
         display: none;
-        flex-direction: column;
-        width: 100%;
+    }
+
+    .menu-right.activo {
         position: fixed;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.95);
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        padding: 5rem 1rem 1rem;
-        z-index: 999;
-        justify-content: flex-start;
-        gap: 1rem;
-        overflow-y: auto;
-    }
-
-    .menu-right.active {
+        inset: 0;
+        z-index: 1000;
         display: flex;
-    }
-
-    .nav-links {
         flex-direction: column;
-        gap: 0.5rem;
-        text-align: center;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 26px;
+        padding: 88px 28px 28px;
+        background-color: rgba(11, 18, 32, 0.99);
+    }
+
+    .menu-right.activo .nav-links {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+    }
+
+    .menu-right.activo .nav-links a {
+        font-size: 1.15rem;
+    }
+
+    .menu-right.activo .social-icons {
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
         width: 100%;
-    }
-
-    .nav-links li {
-        width: 100%;
-    }
-
-    .nav-links a {
-        display: block;
-        padding: 1rem;
-        border-radius: 0;
-        font-size: 1.2rem;
-    }
-
-    .social-icons {
-        justify-content: center;
-        margin-top: 2rem;
-        font-size: 1.5rem;
     }
 }

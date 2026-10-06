@@ -5,6 +5,16 @@
       "source": "/inicio",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/buscar",
+      "destination": "/buscarPartitura.html",
+      "permanent": true
+    },
+    {
+      "source": "/subir",
+      "destination": "/subirPartitura.html",
+      "permanent": true
     }
   ]
 }

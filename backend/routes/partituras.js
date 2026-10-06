@@ -18,9 +18,15 @@ cloudinary.config({
 // archivo de varios GB y agotar la memoria del proceso.
 const MAX_FILE_SIZE_MB = 25;
 
-// Cuántos resultados devuelve como máximo la búsqueda. Evita respuestas
-// gigantes (y bloqueos de RAM) cuando la consulta coincide con casi todo.
-const MAX_RESULTADOS = 100;
+// Cuántos resultados devuelve como máximo la búsqueda.
+//
+// Antes eran 100 y el catálogo ya tiene más de esa cantidad, así que buscar
+// algo común (una vocal, una letra) ocultaba documentos sin avisar. Ahora son
+// 300: suficiente para todo el catálogo y evita respuestas gigantes.
+//
+// Si alguna vez se supera el tope, la respuesta lleva `truncado: true` para que
+// el frontend pueda decirlo, en vez de fingir que esos eran todos.
+const MAX_RESULTADOS = parseInt(process.env.MAX_RESULTADOS || '300', 10);
 
 
 const storage = new CloudinaryStorage({

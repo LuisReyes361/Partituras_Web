@@ -3,10 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const searchInput = document.getElementById('search');
     const resultadosContainer = document.getElementById('resultados');
+    const cabecera = document.getElementById('resultadosCabecera');
+    const conteo = document.getElementById('resultadosConteo');
+    const selectorOrden = document.getElementById('orden');
+    const formBusqueda = document.getElementById('formBusqueda');
 
-    // Temporizadores que hay que cancelar cuando el usuario escribe otra cosa.
-    // Sin esto, la cuenta atrás del enfriamiento seguiría corriendo en
-    // segundo plano y el aviso de la búsqueda anterior se quedaría pegado.
+    // Temporizadores a cancelar cuando el usuario escribe otra cosa. Sin esto
+    // la cuenta atrás del enfriamiento seguía corriendo en segundo plano.
     let temporizadores = [];
 
     const limpiarTemporizadores = () => {
@@ -19,6 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     let timeoutId;
+
+    // Imagen de las tarjetas: 52 KB en vez de los 885 KB que pesaba antes.
+    const IMAGEN_PARTITURA = '/imagenes/partitura-preview.webp';
+
+    // Última búsqueda hecha, para poder reordenar sin volver a preguntar al
+    // servidor (el orden es solo de presentación).
+    let ultimosResultados = [];
+
 
     /*
       descargarArchivo recibe el botón como parámetro explícito.
@@ -38,9 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const blob = await response.blob();
-
-            // createObjectURL y link.click() no existen en el elemento <a> de
-            // algunos navegadores antiguos, pero en los actuales sí.
             const blobUrl = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
 
@@ -69,73 +77,132 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
-    const mostrarResultados = (partituras) => {
-        resultadosContainer.innerHTML = '';
+    /* ------------------------------ Tarjetas ------------------------------ */
 
-        if (!partituras || partituras.length === 0) {
-            mensajeError('No se encontraron partituras');
-            return;
-        }
+    const crearTarjeta = (partitura) => {
+        const card = document.createElement('article');
+        card.className = 'partitura-card';
 
-        partituras.forEach((partitura) => {
-            const card = document.createElement('div');
-            card.className = 'partitura-card';
+        const imagen = document.createElement('img');
+        imagen.className = 'partitura-imagen';
+        imagen.src = IMAGEN_PARTITURA;
+        imagen.alt = `Partitura de ${partitura.nombre}`;
+        // Carga diferida: solo baja la foto cuando la vas viendo al bajar.
+        imagen.loading = 'lazy';
+        imagen.decoding = 'async';
+        imagen.width = 1200;
+        imagen.height = 900;
+        imagen.onerror = () => { imagen.style.display = 'none'; };
 
-            const imagen = document.createElement('img');
-            imagen.className = 'partitura-imagen';
-            imagen.src = '/imagenes/20759%20copy.jpg';
-            imagen.alt = `Vista previa de ${partitura.nombre}`;
-            // Si la imagen no carga, el alt queda visible en su lugar.
-            imagen.onerror = () => { imagen.style.display = 'none'; };
+        const cuerpo = document.createElement('div');
+        cuerpo.className = 'partitura-cuerpo';
 
-            const nombre = document.createElement('div');
-            nombre.className = 'partitura-name';
-            nombre.textContent = partitura.nombre;
+        const nombre = document.createElement('h3');
+        nombre.className = 'partitura-name';
+        nombre.textContent = partitura.nombre;
 
-            const acciones = document.createElement('div');
-            acciones.className = 'partitura-actions';
+        const meta = document.createElement('p');
+        meta.className = 'partitura-meta';
+        meta.textContent = 'Partitura completa · PDF';
 
-            // Botón "Ver" (vista previa vía visor de Google)
-            const verBtn = document.createElement('button');
-            verBtn.className = 'action-btn view-btn';
-            verBtn.title = 'Ver partitura';
+        const acciones = document.createElement('div');
+        acciones.className = 'partitura-actions';
 
-            const verIcon = document.createElement('i');
-            verIcon.className = 'fas fa-eye';
-            verBtn.appendChild(verIcon);
-
-            verBtn.onclick = () => {
-                const urlVisor = `https://docs.google.com/viewer?url=${encodeURIComponent(partitura.archivo)}&embedded=true`;
-                window.open(urlVisor, '_blank');
-            };
-
-            // Botón "Descargar"
-            const descargarBtn = document.createElement('button');
-            descargarBtn.className = 'action-btn download-btn';
-            descargarBtn.title = 'Descargar partitura';
-
-            const descargarIcon = document.createElement('i');
-            descargarIcon.className = 'fas fa-download';
-            descargarBtn.appendChild(descargarIcon);
-
-            descargarBtn.onclick = () => {
-                descargarArchivo(partitura.archivo, partitura.nombre, descargarBtn);
-            };
-
-            acciones.appendChild(verBtn);
-            acciones.appendChild(descargarBtn);
-            card.appendChild(imagen);
-            card.appendChild(nombre);
-            card.appendChild(acciones);
-
-            resultadosContainer.appendChild(card);
+        // Botón "Ver"
+        const verBtn = document.createElement('button');
+        verBtn.className = 'action-btn view-btn';
+        verBtn.type = 'button';
+        verBtn.title = 'Ver partitura';
+        verBtn.innerHTML = '<i class="fas fa-eye"></i> Ver';
+        verBtn.addEventListener('click', () => {
+            const urlVisor = `https://docs.google.com/viewer?url=${encodeURIComponent(partitura.archivo)}&embedded=true`;
+            window.open(urlVisor, '_blank');
         });
+
+        // Botón "Descargar"
+        const descargarBtn = document.createElement('button');
+        descargarBtn.className = 'action-btn';
+        descargarBtn.type = 'button';
+        descargarBtn.title = 'Descargar partitura';
+        descargarBtn.innerHTML = '<i class="fas fa-download"></i> Descargar';
+        descargarBtn.addEventListener('click', () => {
+            descargarArchivo(partitura.archivo, partitura.nombre, descargarBtn);
+        });
+
+        acciones.appendChild(verBtn);
+        acciones.appendChild(descargarBtn);
+
+        cuerpo.appendChild(nombre);
+        cuerpo.appendChild(meta);
+        cuerpo.appendChild(acciones);
+
+        card.appendChild(imagen);
+        card.appendChild(cuerpo);
+
+        return card;
     };
 
 
-    /*
-      Formatea los milisegundos que faltan como "19:32".
-    */
+    const mostrarResultados = (partituras) => {
+        resultadosContainer.innerHTML = '';
+
+        ultimosResultados = partituras;
+
+        if (!partituras || partituras.length === 0) {
+            cabecera.hidden = true;
+            resultadosContainer.innerHTML =
+                '<div class="sin-resultados">No se encontraron partituras</div>';
+            return;
+        }
+
+        cabecera.hidden = false;
+
+        const total = partituras.length;
+
+        // Se construye con nodos en vez de innerHTML. Es más seguro (el nombre
+        // viene de la base y no se interpreta como HTML) y de paso el texto
+        // queda en el nodo, no solo en el markup.
+        conteo.textContent = '';
+        const numero = document.createElement('strong');
+        numero.textContent = String(total);
+        conteo.appendChild(numero);
+        conteo.appendChild(document.createTextNode(
+            ` ${total === 1 ? 'resultado' : 'resultados'} para esta búsqueda`
+        ));
+
+        // Todas las coincidencias de golpe, sin paginación: buscando por
+        // nombre de canción, ver 9 de 47 sería hacer que el usuario vaya
+        // pasando de página en página para saber qué versiones hay.
+        const fragmento = document.createDocumentFragment();
+        partituras.forEach((partitura) => fragmento.appendChild(crearTarjeta(partitura)));
+        resultadosContainer.appendChild(fragmento);
+    };
+
+
+    /* ------------------------------ Orden ------------------------------ */
+
+    const ordenar = () => {
+        if (ultimosResultados.length === 0) {
+            return;
+        }
+
+        const copia = [...ultimosResultados];
+        if (selectorOrden.value === 'nombre') {
+            copia.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+        } else {
+            copia.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+        }
+
+        mostrarResultados(copia);
+    };
+
+    if (selectorOrden) {
+        selectorOrden.addEventListener('change', ordenar);
+    }
+
+
+    /* ------------------------------ Aviso de búsqueda externa ------------------------------ */
+
     const formatearEspera = (ms) => {
         const total = Math.max(0, Math.ceil(ms / 1000));
         const minutos = Math.floor(total / 60);
@@ -144,13 +211,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
-    /*
-      Pide el estado de una canción al backend para saber qué mostrar:
-      botón de solicitar, aviso de "ya la pediste", o "ya está disponible".
-
-      Si el backend no responde, se muestra un aviso simple. La función de
-      búsqueda nunca debe romperse por culpa de este extra.
-    */
     const consultarEstado = async (nombre) => {
         try {
             const response = await fetch(
@@ -169,9 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
-    /*
-      Envía la solicitud. Devuelve lo que respondió el servidor.
-    */
     const solicitarBusqueda = async (nombre) => {
         try {
             const response = await fetch(`${BACKEND_URL}/api/partituras/solicitar`, {
@@ -188,10 +245,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
-    /*
-      Cuando la búsqueda normal no da resultados, se consulta el estado y se
-      ofrece pedir la canción en la fuente externa.
-    */
     const mostrarAvisoBusquedaExterna = async (query) => {
         resultadosContainer.innerHTML = '';
 
@@ -206,16 +259,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const estado = await consultarEstado(query);
         resultadosContainer.appendChild(aviso);
 
-        // Sin respuesta del backend: no se puede ofrecer nada más.
         if (!estado) {
             const texto = document.createElement('p');
-            texto.className = 'avivo-texto';
+            texto.className = 'aviso-texto';
             texto.textContent = 'Prueba con otra parte del nombre.';
             aviso.appendChild(texto);
             return;
         }
 
-        // --- Ya está en la cola o siendo trabajada ---
         if (estado.estado === 'pendiente' || estado.estado === 'procesando') {
             const texto = document.createElement('p');
             texto.className = 'aviso-texto';
@@ -226,16 +277,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // --- Terminó y sí encontró ---
         if (estado.estado === 'completada' && estado.encontradas > 0) {
             const texto = document.createElement('p');
             texto.className = 'aviso-texto aviso-exito';
-            texto.textContent = `Ya hay ${estado.encontradas} version(es) de "${query}". Ya deberías verlas arriba.`;
+            texto.textContent = `Ya hay ${estado.encontradas} version(es) de "${query}".`;
             aviso.appendChild(texto);
             return;
         }
 
-        // --- Terminó y no encontró nada ---
         if (estado.estado === 'completada' && estado.encontradas === 0) {
             const texto = document.createElement('p');
             texto.className = 'aviso-texto';
@@ -244,7 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // --- Falló ---
         if (estado.estado === 'fallida') {
             const texto = document.createElement('p');
             texto.className = 'aviso-texto';
@@ -253,16 +301,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // --- Nunca solicitada ---
         if (!estado.puedeSolicitar) {
-            // Enfriamiento: cuenta atrás en vivo.
             const espera = document.createElement('p');
             espera.className = 'aviso-texto';
 
             const pintarCuenta = () => {
                 if (estado.esperaMs <= 0) {
                     espera.textContent = 'Ya puedes solicitar una búsqueda.';
-                    clearTimeout(temporizadorEspera);
+                    clearInterval(temporizadorEspera);
                     return;
                 }
                 espera.textContent = `Podrás solicitar otra búsqueda en ${formatearEspera(estado.esperaMs)}.`;
@@ -270,19 +316,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             pintarCuenta();
 
-            // Se actualiza cada segundo sin volver a preguntar al servidor.
             const temporizadorEspera = setInterval(() => {
                 estado.esperaMs -= 1000;
                 pintarCuenta();
             }, 1000);
 
             temporizadores.push(temporizadorEspera);
-
             aviso.appendChild(espera);
             return;
         }
 
-        // --- Botón para solicitar ---
         const explicacion = document.createElement('p');
         explicacion.className = 'aviso-texto';
         explicacion.textContent = 'Podemos buscarla en nuestra fuente externa y añadirla al sitio.';
@@ -290,6 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const boton = document.createElement('button');
         boton.className = 'btn-solicitar';
+        boton.type = 'button';
         boton.textContent = 'Solicitar búsqueda';
         boton.addEventListener('click', async () => {
             boton.disabled = true;
@@ -307,10 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (status === 429) {
-                aviso.innerHTML = '';
-                boton.disabled = false;
-                boton.textContent = 'Solicitar búsqueda';
-                mostrarAvisoBusquedaExterna(query);
+                await mostrarAvisoBusquedaExterna(query);
                 return;
             }
 
@@ -325,9 +366,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
+    /* ------------------------------ Búsqueda ------------------------------ */
+
     const buscarPartituras = async (query) => {
         try {
-            resultadosContainer.innerHTML = '<div class="no-results">Buscando partituras...</div>';
+            resultadosContainer.innerHTML = '<div class="sin-resultados">Buscando partituras...</div>';
 
             const response = await fetch(`${BACKEND_URL}/api/partituras/buscar?q=${encodeURIComponent(query)}`);
 
@@ -344,8 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (partituras.length === 0) {
-                // No hay nada en nuestra base: en vez de un "no encontramos"
-                // seco, se ofrece pedir la búsqueda en la fuente externa.
+                cabecera.hidden = true;
                 await mostrarAvisoBusquedaExterna(query);
                 return;
             }
@@ -353,9 +395,8 @@ document.addEventListener('DOMContentLoaded', () => {
             mostrarResultados(partituras);
         } catch (error) {
             console.error('Error en la búsqueda:', error);
+            cabecera.hidden = true;
 
-            // Distinguir "el servidor no respondió" de "no hay resultados":
-            // antes ambos casos mostraban un texto que no explicaba el motivo.
             mensajeError(
                 navigator.onLine === false
                     ? 'Sin conexión a internet. Revisa tu red.'
@@ -364,6 +405,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+
+    /* ------------------------------ Eventos ------------------------------ */
 
     searchInput.addEventListener('input', () => {
         clearTimeout(timeoutId);
@@ -374,9 +417,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (query.length < 1) {
             resultadosContainer.innerHTML = '';
+            cabecera.hidden = true;
             return;
         }
 
+        // 300 ms como siempre: no se lanza una petición por tecla.
         timeoutId = setTimeout(() => buscarPartituras(query), 300);
     });
+
+
+    // El botón "Buscar" del formulario: obliga a buscar sin esperar los 300 ms.
+    if (formBusqueda) {
+        formBusqueda.addEventListener('submit', (e) => {
+            e.preventDefault();
+            clearTimeout(timeoutId);
+            limpiarTemporizadores();
+            const query = searchInput.value.trim();
+
+            if (query.length < 1) {
+                return;
+            }
+
+            buscarPartituras(query);
+        });
+    }
+
+
+    // Si alguien llega con ?q=algo desde el buscador de la portada.
+    const queryInicial = new URLSearchParams(window.location.search).get('q');
+    if (queryInicial) {
+        searchInput.value = queryInicial;
+        buscarPartituras(queryInicial.trim());
+    }
 });

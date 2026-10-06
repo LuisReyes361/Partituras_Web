@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buscador de Partituras | ParLH</title>
+    <title>arill | Biblioteca de partituras</title>
+    <meta name="description" content="Biblioteca abierta de partituras para músicos. Busca, escucha y descarga.">
 
-    <!-- El navbar se carga primero para que el CSS de la página pueda sobrescribirlo -->
+    <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/estilosBuscador.css">
 
@@ -15,45 +16,40 @@
         crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 
-<body>
+<body data-pagina="explorar">
 
-    <header class="navbar">
-        <div class="logo">ParLH</div>
+    <main>
+        <section class="cabecera-pagina">
+            <div class="contenedor">
+                <h1>Explorar partituras</h1>
+                <p class="subtitulo">Acordes, dúos, instrumentales. Encuentra la partitura que estabas buscando.</p>
 
-        <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
-            <i class="fas fa-bars"></i>
-        </button>
-
-        <div class="menu-right">
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="inicio.html">Inicio</a></li>
-                    <li><a href="index.html">Subir Partitura</a></li>
-                    <li><a href="https://wa.me/7716841976?text=Hola,%20necesito%20soporte%20t%C3%A9cnico">Soporte</a></li>
-                </ul>
-            </nav>
-
-            <!-- Antes esto era un <li class="social-icons"> suelto, sin <ul> ni
-                 <ol> que lo contuvieran. -->
-            <div class="social-icons">
-                <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
-                <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://wa.me/7716841976?text=Hola,%20me%20interesa%20saber%20m%C3%A1s%20sobre%20sus%20servicios"
-                    aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                <form class="buscador-barra" id="formBusqueda" role="search">
+                    <input type="search" id="search" name="q"
+                        placeholder="Busca por título o banda"
+                        aria-label="Buscar partituras">
+                    <button type="submit" class="btn">Buscar</button>
+                </form>
             </div>
-        </div>
-    </header>
+        </section>
 
-    <main class="fondo">
+        <section class="resultados-zona">
+            <div class="contenedor">
+                <div class="resultados-cabecera" id="resultadosCabecera" hidden>
+                    <p class="resultados-conteo" id="resultadosConteo"></p>
 
-        <div class="buscador">
-            <input type="text" id="search"
-                placeholder="Escribe el nombre de la partitura para buscarla...">
-        </div>
+                    <label class="orden-control" for="orden">
+                        Ordenar por
+                        <select id="orden">
+                            <option value="recientes">Más recientes</option>
+                            <option value="nombre">Nombre (A-Z)</option>
+                        </select>
+                    </label>
+                </div>
 
-        <div class="grid-container" id="resultados"></div>
-
+                <div class="grid-container" id="resultados"></div>
+            </div>
+        </section>
     </main>
 
     <script src="config.js"></script>

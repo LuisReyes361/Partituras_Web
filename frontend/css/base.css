@@ -1,0 +1,256 @@
+/* ==========================================================================
+   base.css — Fundamentos del diseño
+   Se carga en todas las páginas, antes que el CSS de cada una.
+   ========================================================================== */
+
+/* ------------------------------- Colores ------------------------------- */
+
+:root {
+    /* Hero oscuro (portada) */
+    --azul-noche: #0B1220;
+    --azul-1: #0A84FF;
+    --azul-2: #0060DF;
+    --azul-3: #0A4E8A;
+
+    /* Secciones claras */
+    --blanco: #FFFFFF;
+    --texto: #0F172A;
+    --texto-suave: #64748B;
+    --borde: #E2E8F0;
+
+    /* Superficies suaves */
+    --gris-50: #F8FAFC;
+    --gris-100: #F1F5F9;
+    --gris-200: #E2E8F0;
+    --gris-300: #CBD5E1;
+
+    /* Acento para botones */
+    --acento: #1D4ED8;
+    --acento-hover: #1E40AF;
+
+    /* Semánticos */
+    --exito: #059669;
+    --error: #DC2626;
+    --aviso: #B45309;
+}
+
+
+/* ------------------------------- Tipografía ------------------------------- */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: var(--texto);
+    background-color: var(--gris-50);
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+    margin: 0;
+    line-height: 1.25;
+    color: var(--texto);
+    font-weight: 700;
+}
+
+p {
+    margin: 0;
+}
+
+a {
+    color: inherit;
+}
+
+
+/* ------------------------------- Contenedor ------------------------------- */
+
+.contenedor {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+
+/* ------------------------------- Botones ------------------------------- */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 26px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--acento);
+    color: var(--blanco);
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+    background-color: var(--acento-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Variante clara, para fondos oscuros */
+.btn-claro {
+    background-color: var(--blanco);
+    color: var(--azul-noche);
+}
+
+.btn-claro:hover {
+    background-color: var(--gris-100);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Variante con solo borde */
+.btn-borde {
+    background-color: transparent;
+    color: var(--texto);
+    border: 1px solid var(--borde);
+}
+
+.btn-borde:hover {
+    background-color: var(--gris-100);
+    border-color: var(--gris-300);
+    box-shadow: none;
+}
+
+
+/* ------------------------------- Formularios ------------------------------- */
+
+input[type="text"],
+input[type="search"],
+select {
+    padding: 13px 16px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    background-color: var(--blanco);
+    font-size: 1rem;
+    font-family: inherit;
+    color: var(--texto);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="search"]:focus,
+select:focus {
+    outline: none;
+    border-color: var(--azul-1);
+    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.15);
+}
+
+
+/* ------------------------------- Pie de página ------------------------------- */
+
+.pie {
+    background-color: var(--azul-noche);
+    color: var(--gris-300);
+    padding: 56px 0 32px;
+    margin-top: 80px;
+}
+
+.pie-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pie-marca {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--blanco);
+    margin-bottom: 12px;
+}
+
+.pie-desc {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    max-width: 34ch;
+}
+
+.pie h4 {
+    color: var(--blanco);
+    font-size: 0.78rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+}
+
+.pie ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.pie a {
+    color: var(--gris-300);
+    font-size: 0.92rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.pie a:hover {
+    color: var(--blanco);
+}
+
+.pie-legal {
+    padding-top: 28px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 0.84rem;
+    color: var(--gris-500, #94A3B8);
+}
+
+
+/* ------------------------------- Pantallas chicas ------------------------------- */
+
+@media (max-width: 900px) {
+    .contenedor {
+        padding: 0 18px;
+    }
+
+    .pie-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+    }
+}
+
+@media (max-width: 560px) {
+    .pie-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pie-legal {
+        flex-direction: column;
+    }
+}

@@ -1,78 +1,141 @@
 /* ==========================================================================
-   Página de SUBIR partitura.
-   El navbar vive en css/navbar.css (se carga antes que este archivo).
+   styles.css — Pantalla de subir partitura
    ========================================================================== */
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    color: var(--color-white);
-    overflow: hidden;
-}
+/* ------------------------------- Zona del formulario ------------------------------- */
 
-.hero-section {
-    position: relative;
-    min-height: 91vh;
-    background-image: url(../imagenes/una-vista-aerea-de-libros-de-notas-musicales-sobre-fondo-blanco-con-espacio-para-texto.jpg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+.subir-zona {
+    padding: 64px 0;
+    min-height: calc(100vh - 400px);
     display: flex;
-    justify-content: center;
     align-items: center;
-    text-align: center;
-    overflow: hidden;
 }
 
-h1 {
-    text-align: center;
-    color: #2c3e50;
-    margin-bottom: 2rem;
+.subir-panel {
+    width: 100%;
+    max-width: 620px;
+    margin: 0 auto;
+    background-color: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 8px 28px rgba(15, 23, 42, 0.06);
 }
 
-form {
+.subir-panel h1 {
+    font-size: clamp(1.6rem, 3.6vw, 2.1rem);
+    letter-spacing: -0.03em;
+    margin-bottom: 10px;
+}
+
+.subir-panel .intro {
+    color: var(--texto-suave);
+    font-size: 1rem;
+    margin-bottom: 30px;
+}
+
+#uploadForm {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    transform: translateY(-50%);
-    background-color: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(5px);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    color: #000;
-    text-align: center;
-    overflow-y: auto;
+    gap: 18px;
 }
 
-input[type="text"],
-input[type="file"] {
-    padding: 0.75rem;
-    font-size: 1rem;
-    border: 1px solid #1f89a3;
-    border-radius: 6px;
+.campo label {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--texto);
+    margin-bottom: 8px;
 }
 
-/* Solo el botón del formulario. El del navbar usa .menu-toggle, que tiene su
-   propia regla en navbar.css (background: none) y gana por especificidad. */
-form button {
-    padding: 0.75rem;
+.campo input[type="text"],
+.campo input[type="file"] {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    background-color: var(--gris-50);
     font-size: 1rem;
-    border: none;
-    border-radius: 40px;
-    background-color: #ff0202;
-    color: #fff;
+    font-family: inherit;
+    color: var(--texto);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.campo input[type="text"]::placeholder {
+    color: var(--texto-suave);
+}
+
+.campo input:focus {
+    outline: none;
+    border-color: var(--azul-1);
+    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.15);
+    background-color: var(--blanco);
+}
+
+/* El input de archivo se ve feo por defecto en algunos navegadores */
+.campo input[type="file"] {
+    padding: 12px 14px;
     cursor: pointer;
-    transition: background 0.3s ease;
 }
 
-form button:hover:not(:disabled) {
-    background-color: #2980b9;
+.campo input[type="file"]::file-selector-button {
+    margin-right: 14px;
+    padding: 9px 18px;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--acento);
+    color: var(--blanco);
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
-form button:disabled {
-    opacity: 0.6;
+.campo input[type="file"]::file-selector-button:hover {
+    background-color: var(--acento-hover);
+}
+
+.campo-ayuda {
+    font-size: 0.82rem;
+    color: var(--texto-suave);
+    margin-top: 7px;
+}
+
+#uploadForm button[type="submit"] {
+    margin-top: 6px;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--acento);
+    color: var(--blanco);
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+#uploadForm button[type="submit"]:hover:not(:disabled) {
+    background-color: var(--acento-hover);
+    transform: translateY(-1px);
+}
+
+#uploadForm button[type="submit"]:disabled {
+    opacity: 0.55;
     cursor: not-allowed;
+    transform: none;
+}
+
+
+/* ------------------------------- Responsive ------------------------------- */
+
+@media (max-width: 640px) {
+    .subir-panel {
+        padding: 28px 22px;
+    }
+
+    .subir-zona {
+        padding: 36px 0;
+    }
 }

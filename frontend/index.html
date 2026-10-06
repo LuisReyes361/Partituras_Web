@@ -4,60 +4,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subir Partituras | ParLH</title>
+    <title>arill | Biblioteca de partituras</title>
+    <meta name="description" content="Una biblioteca abierta para músicos. Busca, descarga y comparte partituras.">
 
-    <!-- El navbar se carga primero para que el CSS de la página pueda sobrescribirlo -->
+    <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/navbar.css">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/estilosPagina.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 </head>
 
-<body>
+<body data-pagina="portada">
 
-    <header class="navbar">
-        <div class="logo">ParLH</div>
+    <main>
 
-        <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
-            <i class="fas fa-bars"></i>
-        </button>
+        <!-- ------------------------- Hero oscuro ------------------------- -->
+        <section class="hero">
+            <div class="contenedor">
+                <h1>Encuentra tu próxima partitura</h1>
+                <p class="lema">
+                    Una biblioteca abierta hecha por músicos y para músicos. Busca por título,
+                    descarga y comparte.
+                </p>
 
-        <div class="menu-right">
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="inicio.html">Inicio</a></li>
-                    <li><a href="buscarPartitura.html">Buscar-partitura</a></li>
-                    <li><a href="https://wa.me/7716841976?text=Hola,%20necesito%20soporte%20t%C3%A9cnico">Soporte</a></li>
-                </ul>
-            </nav>
-
-            <div class="social-icons">
-                <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
-                <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://wa.me/7716841976?text=Hola,%20me%20interesa%20saber%20m%C3%A1s%20sobre%20sus%20servicios"
-                    aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                <form class="hero-buscador" id="formPortada" role="search">
+                    <input type="search" id="busquedaPortada" name="q"
+                        placeholder="Busca por título o banda"
+                        aria-label="Buscar partituras">
+                    <button type="submit" class="btn btn-claro">Buscar</button>
+                </form>
             </div>
-        </div>
-    </header>
+        </section>
 
-    <main class="hero-section">
 
-        <form id="uploadForm" enctype="multipart/form-data">
-            <input type="text" id="nombre" name="nombre" placeholder="Nombre de la partitura" required>
-            <input type="file" id="archivo" name="archivo" accept="application/pdf,.pdf" required>
-            <button type="submit">Subir Partitura</button>
-        </form>
+        <!-- ------------------------- Partituras destacadas ------------------------- -->
+        <section class="seccion seccion-alterna">
+            <div class="contenedor">
+                <div class="seccion-cabecera">
+                    <span class="seccion-etiqueta">Catálogo</span>
+                    <h2>Encuentra tu partitura</h2>
+                    <p class="intro">
+                        Cada partitura es un archivo listo para imprimir. Elige la que
+                        necesitas y llévala al atril.
+                    </p>
+                </div>
+
+                <div class="tarjetas-catalogo" id="destacadas">
+                    <!-- Se rellena con script.js -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ------------------------- Repertorio ------------------------- -->
+        <section class="seccion">
+            <div class="contenedor">
+                <div class="bloque-dividido">
+                    <div class="bloque-imagenes">
+                        <img src="imagenes/partitura-preview.webp" width="1200" height="900"
+                            alt="Partitura en papel con notación musical"
+                            loading="lazy" decoding="async">
+                        <img class="secundaria" src="imagenes/597.webp" width="900" height="900"
+                            alt="Detalle de una partitura" loading="lazy" decoding="async">
+                    </div>
+
+                    <div>
+                        <span class="seccion-etiqueta">Colección</span>
+                        <h2>Un repertorio para tocar sin prisas</h2>
+                        <p class="intro">
+                            Acordes, instrumentales y dúos de bandas de sinaloa y de todo
+                            México, listos para descargar. Sin registros, sin esperas.
+                        </p>
+                        <div class="seccion-acciones">
+                            <a href="buscarPartitura.html" class="btn">Abrir colección</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ------------------------- Comunidad ------------------------- -->
+        <section class="seccion seccion-alterna">
+            <div class="contenedor">
+                <div class="bloque-dividido">
+                    <div>
+                        <span class="seccion-etiqueta">Comunidad</span>
+                        <h2>Una biblioteca abierta, con reglas claras</h2>
+                        <p class="intro">
+                            Este espacio funciona porque todos aportan. Esto es lo que
+                            acordamos entre nosotros.
+                        </p>
+                    </div>
+
+                    <ul class="reglas-lista">
+                        <li>
+                            <div>
+                                <h3>Aportar para crecer</h3>
+                                <p>Por cada 5 partituras que descargas, sube una. Así la
+                                    biblioteca nunca deja de crecer.</p>
+                            </div>
+                            <span class="regla-numero">01</span>
+                        </li>
+                        <li>
+                            <div>
+                                <h3>Sin costo, para todos</h3>
+                                <p>Todo se descarga gratis. No hay cuentas, ni suscripciones,
+                                    ni letra pequeña.</p>
+                            </div>
+                            <span class="regla-numero">02</span>
+                        </li>
+                        <li>
+                            <div>
+                                <h3>Respeto entre músicos</h3>
+                                <p>Cada arreglo tiene su autor y se respeta. Compartimos
+                                    para crecer juntos, no para competir.</p>
+                            </div>
+                            <span class="regla-numero">03</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
 
     </main>
 
     <script src="config.js"></script>
     <script src="menu.js"></script>
-    <script src="script.js"></script>
+    <script src="portada.js"></script>
 
 </body>
 
