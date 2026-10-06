@@ -132,6 +132,62 @@ body {
     color: #ff0000;
 }
 
+/* ---------------- Aviso de búsqueda externa ---------------- */
+
+.aviso-busqueda {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 40px 24px;
+    background-color: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 18px;
+    text-align: center;
+}
+
+.aviso-titulo {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: var(--color-white);
+}
+
+.aviso-texto {
+    margin: 0;
+    color: #cccccc;
+    font-size: 0.98rem;
+    max-width: 46ch;
+}
+
+.aviso-exito {
+    color: #6ee7a0;
+}
+
+.btn-solicitar {
+    margin-top: 4px;
+    padding: 12px 26px;
+    border: none;
+    border-radius: 40px;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.15s ease;
+}
+
+.btn-solicitar:hover:not(:disabled) {
+    background-color: var(--color-secondary);
+    transform: translateY(-2px);
+}
+
+.btn-solicitar:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 
 /* --------------------- Cuadrícula adaptable --------------------- */
 

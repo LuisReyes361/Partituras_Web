@@ -10,6 +10,16 @@ const app = express();
 
 
 /*
+  En Railway, todas las peticiones llegan por un proxy interno. Sin esto,
+  req.ip devuelve la IP de ese proxy y NO la del visitante: el enfriamiento de
+  20 minutos se volvería global y el primer usuario en pedir algo bloquearía
+  al sitio entero. El 1 indica que confíe en la primera entrada de
+  X-Forwarded-For, que Railway sí configura.
+*/
+app.set('trust proxy', 1);
+
+
+/*
   Orígenes permitidos para CORS.
 
   El dominio de producción está incluido por defecto para que el sitio
@@ -70,6 +80,10 @@ mongoose
 
 const partituras = require('./routes/partituras');
 app.use('/api/partituras', partituras); 
+
+// Búsqueda automática en la fuente externa (cola de solicitudes).
+const scraping = require('./routes/scraping');
+app.use('/api/partituras', scraping); 
 
 
 // Red de seguridad para errores no controlados.

@@ -91,16 +91,43 @@ router.post('/uploads', procesarArchivo, async (req, res) => {
         }
         
         
-        const nueva = new Partitura({
-            nombre: nombre,
-            archivo: req.file.path, 
-        });
+        /*
+  Evita duplicados.
 
-        await nueva.save();
-        res.json({
-            message: 'Archivo subido correctamente',
-            partitura: nueva,
-        });
+  El scraper antes se apoyaba en su archivo historial_descargas.txt para no
+  repetir. Ese archivo se pierde en cada redeploy de Railway, así que al
+  reiniciar el scraper subiría de nuevo las mismas 105 canciones. Además,
+  /check-name solo lo consultaba el navegador, no el scraper.
+
+  Ahora la comparación se hace aquí, en el servidor, para todos los que suben
+  (formulario web o scraper). Si ya existe, se devuelve 200 con creada:false y
+  se descarta el archivo nuevo: así Cloudinary no se llena de copias.
+*/
+const clave = nombre.toLowerCase().replace(/\s+/g, ' ');
+
+const existente = await Partitura.findOne({
+    nombre: new RegExp(`^${escapeRegex(clave)}$`, 'i')
+});
+
+if (existente) {
+    return res.status(200).json({
+        message: 'Esa partitura ya estaba subida',
+        creada: false,
+        partitura: existente
+    });
+}
+
+const nueva = new Partitura({
+    nombre: nombre,
+    archivo: req.file.path, 
+});
+
+await nueva.save();
+res.status(201).json({
+    message: 'Archivo subido correctamente',
+    creada: true,
+    partitura: nueva,
+});
     } catch (error) {
         console.error('Error al subir la partitura:', error);
         res.status(500).json({ message: 'Error al subir la partitura', error: error.message });

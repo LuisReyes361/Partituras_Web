@@ -55,8 +55,22 @@ como código muerto que solo podía convertir 404 en rutas inexistentes.
 | `CLOUDINARY_CLOUD_NAME` | Cuenta de Cloudinary |
 | `CLOUDINARY_API_KEY` | Cuenta de Cloudinary |
 | `CLOUDINARY_API_SECRET` | Cuenta de Cloudinary |
-| `CLIENT_URL` | *(opcional)* Orígenes CORS extra, separados por comas. Útil para previews de Vercel o un dominio propio. |
-| `PORT` | Lo asigna Railway automáticamente |
+| `SCRAPER_TOKEN` | Secreto compartido con el scraper. **Obligatoria** para que las rutas `/scraper/*` funcionen. |
+| `CLIENT_URL` | *(opcional)* Orígenes CORS extra, separados por comas. |
+| `PORT` | Lo asigna Railway automáticamente. |
+
+### Nota sobre el nombre de la base de datos
+
+`MONGO_URI` puede omitir el nombre de la base; en ese caso el driver usa una
+que se llama `test` por defecto. Funciona, pero conviene escribirla
+explícitamente para que no sea un accidente:
+
+```
+mongodb://<user>:<pass>@cluster....mongodb.net/test?retryWrites=true&w=majority
+```
+
+Si alguna herramienta se conecta sin nombrar base, acabaría en tu catálogo
+real. Este cambio **no mueve ningún dato**.
 
 El dominio de producción (`https://partituras-web-mpt.vercel.app`) ya viene
 incluido en la lista de orígenes permitidos, así que el sitio funciona sin
@@ -91,6 +105,36 @@ Si pruebas con `localhost`, los puertos 5500 y 3000 ya están permitidos por COR
 | `GET` | `/api/partituras/buscar?q=texto` | Busca por subcadena, sin distinguir mayúsculas |
 | `GET` | `/api/partituras/check-name?nombre=texto` | Indica si el nombre ya existe |
 | `POST` | `/api/partituras/uploads` | Sube un PDF (`multipart/form-data`: `nombre`, `archivo`) |
+| `GET` | `/api/partituras/estado?nombre=texto` | Estado de una búsqueda en la fuente externa |
+| `POST` | `/api/partituras/solicitar` | Pide buscar `{ "nombre": "..." }` |
+
+Las rutas del scraper exigen la cabecera `X-Scraper-Token`:
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| `POST` | `/api/partituras/scraper/claim` | Pide trabajo. `204` si no hay nada |
+| `POST` | `/api/partituras/scraper/:clave/completada` | Reporta `{ "encontradas": N }` |
+| `POST` | `/api/partituras/scraper/:clave/fallida` | Reporta un error |
 
 La búsqueda escapa los metacaracteres de regex antes de consultar MongoDB, de
 modo que `(` o `+` se buscan como texto literal y no rompen la consulta.
+
+## Búsqueda automática en fuente externa
+
+Cuando el buscador no encuentra nada, el sitio ofrece un botón **Solicitar
+búsqueda**. Eso deja una nota en la colección `scrape_requests` y el scraper la
+toma cuando puede. **El usuario no espera**: sigue buscando libremente.
+
+| Regla | Valor | Variable |
+|---|---|---|
+| Enfriamiento por usuario | 20 min | `SCRAPE_COOLDOWN_MINUTOS` |
+| Cola máxima | 10 pendientes | `SCRAPE_MAX_PENDIENTES` |
+| Longitud mínima | 4 caracteres | `SCRAPE_MIN_CARACTERES` |
+| Reintentos | 2 | `SCRAPE_MAX_INTENTOS` |
+
+Si el scraper termina con `encontradas: 0`, la solicitud queda cacheada: esa
+canción no se vuelve a buscar nunca.
+
+> El backend usa `app.set('trust proxy', 1)`, sin el cual `req.ip` devuelve el
+> proxy interno de Railway y el enfriamiento de 20 minutos sería global para
+> todo el sitio.
