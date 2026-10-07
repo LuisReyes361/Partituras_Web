@@ -19,16 +19,52 @@
 
 <body data-pagina="subir">
 
+    <div class="pantalla-bienvenida" id="pantallaBienvenida">
+        <h1>Estudia sin límites</h1>
+        <p>Bienvenido de nuevo a la biblioteca más grande de partituras.</p>
+        <button class="btn" type="button" id="btnEntrar">Entrar</button>
+    </div>
+
     <main>
+
+        <section class="cabecera-azul">
+            <div class="contenedor">
+                <h1>Subir partitura</h1>
+                <p>Comparte un arreglo con la comunidad. Solo necesitas un PDF.</p>
+            </div>
+        </section>
+
         <section class="subir-zona">
             <div class="contenedor">
                 <div class="subir-panel">
-                    <h1>Sube tu partitura</h1>
-                    <p class="intro">
-                        Comparte un arreglo con la comunidad. Solo necesita ser un PDF.
-                    </p>
+
+                    <div class="ilustracion" aria-hidden="true">
+                        <span class="pieza pdf"><i class="fas fa-file-pdf"></i></span>
+                        <i class="fas fa-arrow-right-long flecha"></i>
+                        <span class="pieza carpeta"><i class="fas fa-folder-open"></i></span>
+                    </div>
+
+                    <h2>Sube tu partitura</h2>
 
                     <form id="uploadForm" enctype="multipart/form-data">
+
+                        <div class="campo">
+                            <label for="archivo">Partitura en PDF</label>
+
+                            <div class="campo-archivo">
+                                <label class="btn-seleccionar" for="archivo">
+                                    <i class="fas fa-upload"></i> Seleccionar archivo
+                                </label>
+                                <span class="estado-archivo" id="estadoArchivo">
+                                    un archivo seleccionado
+                                </span>
+                                <input type="file" id="archivo" name="archivo"
+                                    accept="application/pdf,.pdf" required>
+                            </div>
+
+                            <p class="campo-ayuda">Solo PDF, hasta 25 MB.</p>
+                        </div>
+
                         <div class="campo">
                             <label for="nombre">Nombre de la partitura</label>
                             <input type="text" id="nombre" name="nombre"
@@ -36,19 +72,16 @@
                                 maxlength="120" required>
                         </div>
 
-                        <div class="campo">
-                            <label for="archivo">Archivo PDF</label>
-                            <input type="file" id="archivo" name="archivo" accept="application/pdf,.pdf" required>
-                            <p class="campo-ayuda">Solo archivos PDF, hasta 25 MB.</p>
-                        </div>
-
                         <button type="submit">Subir partitura</button>
                     </form>
+
                 </div>
             </div>
         </section>
+
     </main>
 
+    <script src="bienvenida.js"></script>
     <script src="config.js"></script>
     <script src="menu.js"></script>
     <script src="script.js"></script>

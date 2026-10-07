@@ -92,6 +92,11 @@
     box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.3);
 }
 
+/* La barra inferior fija ocupa espacio: el hero deja sitio para que no tape texto */
+.hero {
+    padding-bottom: 104px;
+}
+
 /* ------------------------------- Secciones claras ------------------------------- */
 
 .seccion {

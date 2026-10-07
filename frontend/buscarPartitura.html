@@ -18,17 +18,23 @@
 
 <body data-pagina="explorar">
 
+    <div class="pantalla-bienvenida" id="pantallaBienvenida">
+        <h1>Estudia sin límites</h1>
+        <p>Bienvenido de nuevo a la biblioteca más grande de partituras.</p>
+        <button class="btn" type="button" id="btnEntrar">Entrar</button>
+    </div>
+
     <main>
-        <section class="cabecera-pagina">
+        <section class="cabecera-azul">
             <div class="contenedor">
                 <h1>Explorar partituras</h1>
-                <p class="subtitulo">Acordes, dúos, instrumentales. Encuentra la partitura que estabas buscando.</p>
+                <p>Acordes, dúos, instrumentales. Encuentra la partitura que estabas buscando.</p>
 
                 <form class="buscador-barra" id="formBusqueda" role="search">
                     <input type="search" id="search" name="q"
                         placeholder="Busca por título o banda"
                         aria-label="Buscar partituras">
-                    <button type="submit" class="btn">Buscar</button>
+                    <button type="submit" class="btn btn-claro">Buscar</button>
                 </form>
             </div>
         </section>
@@ -52,6 +58,7 @@
         </section>
     </main>
 
+    <script src="bienvenida.js"></script>
     <script src="config.js"></script>
     <script src="menu.js"></script>
     <script src="scripbuscar.js"></script>

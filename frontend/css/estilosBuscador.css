@@ -2,30 +2,37 @@
    estilosBuscador.css — Pantalla "Explorar partituras"
    ========================================================================== */
 
-.cabecera-pagina {
-    background-color: var(--blanco);
-    border-bottom: 1px solid var(--borde);
-    padding: 44px 0 40px;
-}
-
-.cabecera-pagina h1 {
-    font-size: clamp(1.9rem, 4vw, 2.6rem);
-    letter-spacing: -0.03em;
-    margin-bottom: 10px;
-}
-
-.cabecera-pagina .subtitulo {
-    color: var(--texto-suave);
-    font-size: 1.05rem;
-    margin-bottom: 26px;
-}
-
 /* ------------------------------- Buscador ------------------------------- */
 
 .buscador-barra {
     display: flex;
     gap: 12px;
     max-width: 720px;
+    margin: 26px auto 0;
+}
+
+/* Sobre el fondo oscuro, el campo va translúcido */
+.buscador-barra input {
+    flex: 1;
+    min-width: 0;
+    padding: 15px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--blanco);
+    font-size: 1rem;
+    font-family: inherit;
+    backdrop-filter: blur(8px);
+}
+
+.buscador-barra input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.buscador-barra input:focus {
+    outline: none;
+    border-color: var(--azul-1);
+    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.3);
 }
 
 .buscador-barra input {
@@ -107,7 +114,7 @@
 
 .partitura-imagen {
     width: 100%;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
     background-color: var(--gris-100);
     display: block;
@@ -117,7 +124,7 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    padding: 18px;
+    padding: 12px;
 }
 
 .partitura-name {
@@ -133,7 +140,7 @@
 .partitura-meta {
     font-size: 0.83rem;
     color: var(--texto-suave);
-    margin-bottom: 16px;
+    margin-bottom: 10px;
 }
 
 .partitura-actions {
@@ -148,7 +155,7 @@
     align-items: center;
     justify-content: center;
     gap: 7px;
-    padding: 10px 14px;
+    padding: 8px 12px;
     border: 1px solid var(--borde);
     border-radius: 8px;
     background-color: var(--gris-50);

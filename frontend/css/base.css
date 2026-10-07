@@ -3,6 +3,170 @@
    Se carga en todas las páginas, antes que el CSS de cada una.
    ========================================================================== */
 
+/* ==========================================================================
+   Barra superior azul difuminada — se repite en las 3 páginas.
+   ========================================================================== */
+
+.cabecera-azul {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--azul-noche);
+    padding: 44px 0 48px;
+    text-align: center;
+    isolation: isolate;
+}
+
+/*
+  Los dos brillos que hacen el fondo azul "desvanecido". El difuminado alto
+  evita que se note el borde del círculo.
+*/
+.cabecera-azul::before,
+.cabecera-azul::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+}
+
+.cabecera-azul::before {
+    width: 520px;
+    height: 520px;
+    top: -240px;
+    left: 50%;
+    transform: translateX(-58%);
+    background: radial-gradient(circle, var(--azul-1) 0%, var(--azul-2) 46%, transparent 72%);
+    opacity: 0.42;
+}
+
+.cabecera-azul::after {
+    width: 400px;
+    height: 400px;
+    bottom: -220px;
+    right: 8%;
+    background: radial-gradient(circle, var(--azul-2) 0%, var(--azul-3) 50%, transparent 74%);
+    opacity: 0.28;
+}
+
+.cabecera-azul h1 {
+    color: var(--blanco);
+    font-size: clamp(1.9rem, 4.5vw, 3rem);
+    letter-spacing: -0.035em;
+    margin-bottom: 10px;
+}
+
+.cabecera-azul p {
+    color: var(--gris-300);
+    font-size: 1.04rem;
+    max-width: 52ch;
+    margin: 0 auto;
+}
+
+
+/* ==========================================================================
+   Barra inferior — solo móvil
+   ========================================================================== */
+
+.barra-inferior {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    .barra-inferior {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 90;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 8px 12px;
+        /* space para los gestos del celular */
+        padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+        background-color: var(--blanco);
+        border-top: 1px solid var(--borde);
+        box-shadow: 0 -2px 14px rgba(15, 23, 42, 0.07);
+    }
+
+    .barra-inferior a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        padding: 5px 14px;
+        color: var(--texto-suave);
+        text-decoration: none;
+        font-size: 0.68rem;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+
+    .barra-inferior a i {
+        font-size: 1.12rem;
+    }
+
+    .barra-inferior a.activo {
+        color: var(--acento);
+    }
+}
+
+
+/* ==========================================================================
+   Campanita de notificación — de adorno
+   ========================================================================== */
+
+.campanita {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    color: inherit;
+    font-size: 1.05rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.campanita:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--blanco);
+}
+
+.campanita .punto {
+    position: absolute;
+    top: 7px;
+    right: 8px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #F43F5E;
+    /* El punto se ve sobre el fondo oscuro, no se pierde */
+    box-shadow: 0 0 0 2px var(--azul-noche);
+}
+
+@media (max-width: 900px) {
+    .campanita {
+        color: var(--texto);
+    }
+
+    .campanita:hover {
+        background-color: var(--gris-100);
+        color: var(--texto);
+    }
+
+    .campanita .punto {
+        box-shadow: 0 0 0 2px var(--blanco);
+    }
+}
+
+
 /* ------------------------------- Colores ------------------------------- */
 
 :root {
@@ -229,6 +393,47 @@ select:focus {
     gap: 12px;
     font-size: 0.84rem;
     color: var(--gris-500, #94A3B8);
+}
+
+
+/* ------------------------------- Pantalla de bienvenida ------------------------------- */
+
+.pantalla-bienvenida {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 32px;
+    text-align: center;
+    overflow-y: auto;
+    background-color: var(--azul-noche);
+    /* El azul difuminado del sitio, igual que el hero de la portada */
+    background-image:
+        radial-gradient(circle at 50% 26%, rgba(10, 132, 255, 0.3), transparent 62%),
+        radial-gradient(circle at 78% 82%, rgba(0, 96, 223, 0.2), transparent 58%);
+}
+
+.pantalla-bienvenida h1 {
+    color: var(--blanco);
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    letter-spacing: -0.03em;
+}
+
+.pantalla-bienvenida p {
+    color: var(--gris-300);
+    max-width: 44ch;
+    margin-bottom: 6px;
+}
+
+/* Se desvanece al entrar */
+.pantalla-bienvenida.saliendo {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
 }
 
 

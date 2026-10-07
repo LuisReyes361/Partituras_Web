@@ -13,6 +13,38 @@ document.addEventListener('DOMContentLoaded', () => {
         subir: '/subirPartitura.html'
     };
 
+    // Barra inferior: solo se ve en móvil (lo decide el CSS).
+    const BARRA_INFERIOR = [
+        { icono: 'fa-house', etiqueta: 'Inicio', href: RUTAS.portada, clave: 'portada' },
+        { icono: 'fa-magnifying-glass', etiqueta: 'Buscar', href: RUTAS.explorar, clave: 'explorar' },
+        { icono: 'fa-arrow-up-from-bracket', etiqueta: 'Subir', href: RUTAS.subir, clave: 'subir' }
+    ];
+
+    const montarCampanita = () => {
+        const boton = el('button', 'campanita');
+        boton.type = 'button';
+        boton.title = 'Notificaciones';
+        boton.setAttribute('aria-label', 'Notificaciones');
+        boton.innerHTML =
+            '<i class="fas fa-bell"></i><span class="punto"></span>';
+        return boton;
+    };
+
+    const montarBarraInferior = () => {
+        const barra = el('nav', 'barra-inferior');
+        barra.setAttribute('aria-label', 'Navegación principal');
+
+        BARRA_INFERIOR.forEach((item) => {
+            const a = el('a', item.clave === PAGINA_ACTUAL ? 'activo' : null);
+            a.href = item.href;
+            a.innerHTML =
+                `<i class="fas ${item.icono}"></i><span>${item.etiqueta}</span>`;
+            barra.appendChild(a);
+        });
+
+        return barra;
+    };
+
     const MENU = [
         { texto: 'Inicio', href: RUTAS.portada, clave: 'portada' },
         { texto: 'Explorar', href: RUTAS.explorar, clave: 'explorar' },
@@ -71,13 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
         logo.href = RUTAS.portada;
         nav.firstChild.appendChild(logo);
 
-        const toggle = el('button', 'menu-toggle');
-        toggle.type = 'button';
-        toggle.setAttribute('aria-label', 'Abrir menú');
-        toggle.setAttribute('aria-expanded', 'false');
-        toggle.innerHTML = '<i class="fas fa-bars"></i>';
-        nav.firstChild.appendChild(toggle);
-
         const derecha = el('div', 'menu-right');
 
         const lista = el('ul', 'nav-links');
@@ -108,6 +133,22 @@ document.addEventListener('DOMContentLoaded', () => {
         derecha.appendChild(redes);
 
         nav.firstChild.appendChild(derecha);
+
+        // Hamburguesa (solo móvil) y campanita van juntos al final.
+        const herramientas = el('div', 'nav-herramientas');
+        herramientas.style.cssText = 'display:flex;align-items:center;gap:6px;flex-shrink:0';
+
+        const toggle = el('button', 'menu-toggle');
+        toggle.type = 'button';
+        toggle.setAttribute('aria-label', 'Abrir menú');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.innerHTML = '<i class="fas fa-bars"></i>';
+        herramientas.appendChild(toggle);
+
+        herramientas.appendChild(montarCampanita());
+
+        nav.firstChild.appendChild(herramientas);
+
         return nav;
     };
 
@@ -157,6 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     document.body.prepend(montarNavbar());
+    document.body.appendChild(montarBarraInferior());
     document.body.appendChild(montarPie());
 
 
@@ -194,6 +236,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 pintarIcono();
             }
         });
+
+        const navbar = document.querySelector('.navbar');
+        let ultimaPosicion = window.scrollY;
+
+        window.addEventListener('scroll', () => {
+            const posicionActual = window.scrollY;
+
+            // Arriba del todo: siempre visible.
+            if (posicionActual < 80) {
+                navbar.classList.remove('escondido');
+            } else if (posicionActual > ultimaPosicion) {
+                // Bajando: se esconde.
+                navbar.classList.add('escondido');
+            } else {
+                // Subiendo: vuelve a salir.
+                navbar.classList.remove('escondido');
+            }
+
+            ultimaPosicion = posicionActual;
+        }, { passive: true });
     }
 
 });

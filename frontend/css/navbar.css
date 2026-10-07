@@ -60,6 +60,13 @@
     border-color: rgba(255, 255, 255, 0.5);
 }
 
+.nav-herramientas {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
 .menu-toggle {
     display: none;
     background: none;
@@ -135,4 +142,13 @@
         border-top: 1px solid rgba(255, 255, 255, 0.1);
         width: 100%;
     }
+}
+
+/* El menú se esconde al bajar y vuelve al subir */
+.navbar {
+    transition: transform 0.3s ease;
+}
+
+.navbar.escondido {
+    transform: translateY(-100%);
 }

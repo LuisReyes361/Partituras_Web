@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nombreInput = document.getElementById('nombre');
     const archivoInput = document.getElementById('archivo');
     const submitBtn = form.querySelector('button[type="submit"]');
+    const estadoArchivo = document.getElementById('estadoArchivo');
 
     const COLOR_BOTON = '#4B2F6D';
 
@@ -21,16 +22,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // Autocompleta el nombre con el del archivo y descarta lo que no sea válido.
     // Antes se aceptaba cualquier cosa y el error (si lo había) no se veía
     // hasta que el backend lo rechazaba.
+    // El recuadro gris del formulario muestra el archivo elegido.
+    const pintarEstadoArchivo = (texto, ok) => {
+        if (!estadoArchivo) {
+            return;
+        }
+        estadoArchivo.textContent = texto;
+        estadoArchivo.classList.toggle('con-archivo', Boolean(ok));
+    };
+
+
     archivoInput.addEventListener('change', function () {
         const archivo = this.files && this.files[0];
 
         if (!archivo) {
+            pintarEstadoArchivo('un archivo seleccionado', false);
             return;
         }
 
         if (archivo.type !== 'application/pdf') {
             this.value = '';
             nombreInput.value = '';
+            pintarEstadoArchivo('un archivo seleccionado', false);
             mostrarError('Archivo no válido', 'Solo se permiten archivos PDF.');
             return;
         }
@@ -38,11 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (archivo.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
             this.value = '';
             nombreInput.value = '';
+            pintarEstadoArchivo('un archivo seleccionado', false);
             mostrarError('Archivo demasiado grande', `El archivo no puede superar los ${MAX_FILE_SIZE_MB} MB.`);
             return;
         }
 
-        nombreInput.value = archivo.name.replace(/\.[^/.]+$/, '');
+        pintarEstadoArchivo(archivo.name, true);
+        nombreInput.value = archivo.name.replace(/\.[^/.]+$/, "");
     });
 
 
@@ -137,6 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             form.reset();
+            pintarEstadoArchivo('un archivo seleccionado', false);
         } catch (error) {
             console.error('Error al subir la partitura:', error);
             // Antes este error solo llegaba a la consola: el usuario veía el
