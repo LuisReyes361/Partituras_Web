@@ -6,31 +6,44 @@
 /* ==========================================================================
    Barra superior azul difuminada — se repite en las 3 páginas.
    ========================================================================== */
-
 .cabecera-azul {
     position: relative;
     overflow: hidden;
+    /* Fondo base azul noche */
     background-color: var(--azul-noche);
-    padding: 44px 0 48px;
+    padding: 44px 0 100px; /* Suficiente espacio abajo para el difuminado */
     text-align: center;
     isolation: isolate;
 }
 
-/*
-  Los dos brillos que hacen el fondo azul "desvanecido". El difuminado alto
-  evita que se note el borde del círculo.
-*/
-.cabecera-azul::before,
-.cabecera-azul::after {
+/* Este pseudo-elemento crea el difuminado SOLO en la parte inferior,
+   por debajo del texto, sin afectar su legibilidad. */
+.cabecera-azul::before {
     content: '';
     position: absolute;
-    z-index: -1;
-    border-radius: 50%;
-    filter: blur(80px);
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30%; /* Ocupa el 60% inferior de la cabecera */
+    z-index: -1; /* Detrás del texto */
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(248, 250, 252, 0.3) 40%,
+        rgba(248, 250, 252, 0.7) 70%,
+        var(--gris-50) 100%
+    );
     pointer-events: none;
 }
 
-.cabecera-azul::before {
+/* Los brillos azules que ya tenías, pero ajustados para que no interfieran */
+.cabecera-azul::after {
+    content: '';
+    position: absolute;
+    z-index: -2;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
     width: 520px;
     height: 520px;
     top: -240px;
@@ -39,16 +52,6 @@
     background: radial-gradient(circle, var(--azul-1) 0%, var(--azul-2) 46%, transparent 72%);
     opacity: 0.42;
 }
-
-.cabecera-azul::after {
-    width: 400px;
-    height: 400px;
-    bottom: -220px;
-    right: 8%;
-    background: radial-gradient(circle, var(--azul-2) 0%, var(--azul-3) 50%, transparent 74%);
-    opacity: 0.28;
-}
-
 .cabecera-azul h1 {
     color: var(--blanco);
     font-size: clamp(1.9rem, 4.5vw, 3rem);
@@ -132,11 +135,12 @@
     font-family: inherit;
     cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease;
+    color: var(--blanco);
 }
 
 .campanita:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: var(--blanco);
+    background-color:#1033ff;
+    color: var(--exito);
 }
 
 .campanita .punto {
@@ -146,7 +150,7 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background-color: #F43F5E;
+    background-color: #40fa07;
     /* El punto se ve sobre el fondo oscuro, no se pierde */
     box-shadow: 0 0 0 2px var(--azul-noche);
 }
@@ -248,9 +252,9 @@ a {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 13px 26px;
+    padding: 1p0x 25px;
     border: none;
-    border-radius: 8px;
+    border-radius: 80px;
     background-color: var(--acento);
     color: var(--blanco);
     font-size: 1rem;

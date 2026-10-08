@@ -97,9 +97,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const montarNavbar = () => {
         const nav = el('header', 'navbar');
-        nav.innerHTML = '<div class="contenedor" style="display:flex;align-items:center;justify-content:space-between;gap:24px;width:100%">';
+        nav.innerHTML = `<div class="contenedor navbar-contenedor">`;
 
-        const logo = el('a', 'logo', 'arill');
+        const logo = el('a', 'logo', 'Arill');
         logo.href = RUTAS.portada;
         nav.firstChild.appendChild(logo);
 

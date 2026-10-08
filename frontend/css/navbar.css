@@ -6,6 +6,8 @@
 .navbar {
     position: sticky;
     top: 0;
+    width: 100%;
+    height: 55px;
     z-index: 100;
     display: flex;
     align-items: center;
@@ -16,6 +18,20 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.navbar-contenedor {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 32px;
+    min-height: 64px;
+}
+
+
 .logo {
     font-size: 1.45rem;
     font-weight: 700;
@@ -25,21 +41,39 @@
     flex-shrink: 0;
 }
 
+
+.menu-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 36px;
+
+    margin-left: auto;
+}
+
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 32px;
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
+.nav-links li {
+    margin: 0;
+    padding: 0;
+}
+
 .nav-links a {
+    display: flex;
+    align-items: center;
     color: var(--gris-300);
     font-size: 0.92rem;
     font-weight: 500;
     text-decoration: none;
     transition: color 0.2s ease;
+    white-space: nowrap;
 }
 
 .nav-links a:hover,
@@ -48,17 +82,9 @@
 }
 
 /* Enlace del botón "Subir partitura" del Figma, con borde */
-.nav-links .nav-destacado a {
-    padding: 9px 18px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 8px;
-    color: var(--blanco);
-}
 
-.nav-links .nav-destacado a:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.5);
-}
+
+
 
 .nav-herramientas {
     display: flex;
@@ -85,16 +111,27 @@
 
 .social-icons {
     display: flex;
-    gap: 14px;
+    gap: 17px;
+    align-items: center;
     list-style: none;
+    margin: 10px;
+    padding: 0;
+}
+
+.social-icons li {
     margin: 0;
     padding: 0;
 }
 
 .social-icons a {
+    display: flex;
     color: var(--gris-400, #94A3B8);
     font-size: 1.05rem;
     transition: color 0.2s ease;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
 }
 
 .social-icons a:hover {
